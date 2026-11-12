@@ -20,13 +20,19 @@ HustleHub+ is designed for:
 - Node.js
 - Express.js
 
-### Security
+### Security and Validation
+- bcrypt
+- JSON Web Tokens (JWT)
+- express-validator
+- express-rate-limit
 - Helmet
 - CORS
 - HTTPS
-- Password hashing
-- JSON Web Tokens (JWT)
-- Input validation
+- dotenv
+
+### Development
+- Nodemon
+- Git and GitHub
 
 ### Testing
 - Postman
@@ -36,13 +42,26 @@ HustleHub+ is designed for:
 ```text
 HustleHub-Plus/
 │
+├── docs/
+│   ├── architecture/
+│   └── screenshots/
+│
 ├── src/
-│   ├── config/
 │   ├── controllers/
 │   ├── data/
 │   ├── middleware/
-│   └── routes/
-```
+│   ├── routes/
+│   └── utils/
+│
+├── certs/                              # Local only - ignored by Git
+├── .env                                # Local only - ignored by Git
+├── .env.example
+├── .gitignore
+├── HustleHub_Part1_Postman_Collection.json
+├── package-lock.json
+├── package.json
+├── README.md
+└── server.js
 ```
 
 ## Installation and Setup
@@ -464,6 +483,49 @@ Testing covers both successful and unsuccessful requests, including:
 
 Testing both positive and negative scenarios ensures that the API does not only work when valid data is supplied, but also responds securely and predictably when invalid or malicious requests are made.
 
+## API Testing Evidence
+
+The following screenshots provide evidence of successful and unsuccessful API requests tested against the final integrated Part 1 backend.
+
+### Health Check — 200 OK
+
+![Health Check](docs/screenshots/01-health-check-200.png)
+
+### Successful Registration — 201 Created
+
+![Successful Registration](docs/screenshots/02-registration-success-201.png)
+
+### Duplicate Registration — 409 Conflict
+
+![Duplicate Registration](docs/screenshots/03-registration-duplicate-409.png)
+
+### Registration Validation — 400 Bad Request
+
+![Registration Validation](docs/screenshots/04-registration-validation-400.png)
+
+### Successful Login and JWT Generation — 200 OK
+
+![Successful Login](docs/screenshots/05-login-success-jwt-200.png)
+
+### Failed Login — 401 Unauthorized
+
+![Failed Login](docs/screenshots/06-login-failed-401.png)
+
+### Authorized Protected Profile — 200 OK
+
+![Authorized Profile](docs/screenshots/07-profile-authorized-200.png)
+
+### Unauthorized Protected Profile — 401 Unauthorized
+
+![Unauthorized Profile](docs/screenshots/08-profile-unauthorized-401.png)
+
+### Malformed JSON Handling — 400 Bad Request
+
+![Malformed JSON](docs/screenshots/09-malformed-json-400.png)
+
+### Unknown Route Handling — 404 Not Found
+
+![Unknown Route](docs/screenshots/10_unknown_route_404.png)
 ---
 
 ## System Architecture
@@ -479,6 +541,11 @@ Part 1 focuses on the secure Node.js and Express.js backend foundation. The arch
 
 The system architecture diagram documents the major application components, system boundaries and security mechanisms used by HustleHub+.
 
+### Architecture Diagram
+
+The diagram below illustrates the Part 1 backend architecture, system boundaries, authentication flow and implemented security mechanisms, while also showing how the backend will form part of the complete MERN architecture during later development stages.
+
+![HustleHub+ Part 1 System Architecture](docs/architecture/hustlehub-part1-architecture.png)
 ---
 
 ## Part 1 Demonstration
@@ -501,14 +568,13 @@ The demonstration includes:
 
 ## Contributors
 
-HustleHub+ is developed collaboratively for the INSY7314 Portfolio of Evidence.
+HustleHub+ was developed collaboratively for the INSY7314 Portfolio of Evidence.
 
-Each group member is responsible for contributing their own implementation, testing or documentation work and maintaining evidence of their contribution through Git commit history.
+| Member | Part 1 Responsibilities |
+| --- | --- |
+| Mikhaeel | Group leadership, initial Node/Express project setup, HTTPS configuration, GitHub management, integration and debugging, README documentation and final testing |
+| Mangaliso | User registration, password hashing, registration validation and user-data structure |
+| Julian | User login, JWT authentication, authentication middleware and protected profile functionality |
+| Theolin | Centralised error handling, 404 handling, rate limiting, Postman testing collection and system architecture diagram |
 
-The project uses feature branches and an integration workflow so that individual components can be developed independently, reviewed and tested together before being incorporated into the final application.
-│
-├── .env.example
-├── .gitignore
-├── package.json
-├── README.md
-└── server.js
+Each member contributed through their own development work and Git commit history. Feature branches and an integration branch were used to combine and test the individual components before finalisation.

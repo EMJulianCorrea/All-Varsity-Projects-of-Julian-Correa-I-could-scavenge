@@ -1,0 +1,8 @@
+﻿@model string
+<h2>Upload File</h2>
+<form asp-action="Upload" asp-controller="FileUpload" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" />
+    <button type="submit">Upload</button>
+</form>
+<p>@ViewBag.Message</p>
+

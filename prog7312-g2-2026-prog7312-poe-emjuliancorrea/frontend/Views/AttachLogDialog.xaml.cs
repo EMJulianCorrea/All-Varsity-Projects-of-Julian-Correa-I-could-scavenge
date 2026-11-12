@@ -21,8 +21,12 @@ public partial class AttachLogDialog : Window
         _sensor = sensor;
 
         TargetText.Text = $"Attaching to sensor {sensor.Id}  ({sensor.DeploymentLocation})";
-        ClassificationBox.ItemsSource = Enum.GetValues<LogClassification>();
-        ClassificationBox.SelectedItem = LogClassification.Other;
+        ClassificationBox.ItemsSource = Enum.GetValues<LogClassification>()
+            .Select(value => new ClassificationChoice(value, value == LogClassification.RawData ? "Raw Data" : value.ToString()))
+            .ToList();
+        ClassificationBox.DisplayMemberPath = nameof(ClassificationChoice.Label);
+        ClassificationBox.SelectedValuePath = nameof(ClassificationChoice.Value);
+        ClassificationBox.SelectedValue = LogClassification.Other;
         TipText.Visibility = MainWindow.GuidanceEnabled ? Visibility.Visible : Visibility.Collapsed;
     }
 
@@ -77,12 +81,12 @@ public partial class AttachLogDialog : Window
         var (success, _, result) = await MainWindow.ApiClient.ClassifyLogAsync(info.Name, sample);
         if (success && result is not null)
         {
-            ClassificationBox.SelectedItem = result.Classification;
+            ClassificationBox.SelectedValue = result.Classification;
             SuggestionText.Text = $"Suggested: {result.Classification}, because {result.Reason} Change it above if that's wrong.";
         }
         else
         {
-            ClassificationBox.SelectedItem = LogClassification.Other;
+            ClassificationBox.SelectedValue = LogClassification.Other;
             SuggestionText.Text = "Couldn't get a suggestion from the API. Choose the classification yourself.";
         }
 
@@ -92,7 +96,14 @@ public partial class AttachLogDialog : Window
 
     private async void Upload_Click(object sender, RoutedEventArgs e)
     {
-        if (_filePath is null || ClassificationBox.SelectedItem is not LogClassification classification) return;
+        if (_filePath is null || ClassificationBox.SelectedValue is not LogClassification classification) return;
+        var currentProblem = LogFileRules.Validate(new FileInfo(_filePath));
+        if (currentProblem is not null)
+        {
+            ShowStatus(currentProblem, isError: true);
+            UploadButton.IsEnabled = false;
+            return;
+        }
 
         SetBusy(true);
         ShowStatus("Uploading...", isError: false);
@@ -117,6 +128,8 @@ public partial class AttachLogDialog : Window
         CancelButton.IsEnabled = !busy;
         UploadButton.IsEnabled = !busy && _filePath is not null;
     }
+
+    private sealed record ClassificationChoice(LogClassification Value, string Label);
 
     private void ShowStatus(string message, bool isError)
     {

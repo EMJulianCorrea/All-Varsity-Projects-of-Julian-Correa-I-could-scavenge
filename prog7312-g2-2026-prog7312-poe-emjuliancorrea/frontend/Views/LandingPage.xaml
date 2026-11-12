@@ -2,55 +2,308 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Title="Home">
+
+    <Page.Resources>
+        <SolidColorBrush x:Key="CommandAccentBrush" Color="#7C3AED"/>
+        <Style x:Key="FeatureCardStyle" TargetType="Button">
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid x:Name="Root" RenderTransformOrigin="0.5,0.5">
+                            <Grid.RenderTransform>
+                                <TranslateTransform/>
+                            </Grid.RenderTransform>
+
+                            <Border x:Name="Shadow" CornerRadius="14" Background="White">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="14" ShadowDepth="2" Direction="270" Opacity="0.10" Color="#101223"/>
+                                </Border.Effect>
+                            </Border>
+
+                            <Border x:Name="Card" CornerRadius="14" Background="{StaticResource CardBrush}"
+                                    BorderBrush="#E2E5EC" BorderThickness="1" SnapsToDevicePixels="True">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <Border Height="5" CornerRadius="13,13,0,0" Background="{TemplateBinding Tag}"/>
+                                    <ContentPresenter Grid.Row="1" Margin="22,20,22,20"/>
+                                </Grid>
+                            </Border>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Card" Property="BorderBrush" Value="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                <Setter TargetName="Shadow" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect BlurRadius="26" ShadowDepth="6" Direction="270" Opacity="0.20" Color="#101223"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="Root" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <TranslateTransform Y="-4"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="Card" Property="BorderBrush" Value="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Root" Property="Opacity" Value="0.94"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="FeatureLineStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="#3A3F52"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+        </Style>
+
+        <Style x:Key="HeroChipStyle" TargetType="Border">
+            <Setter Property="Background" Value="#26FFFFFF"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="11,4"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+        </Style>
+    </Page.Resources>
+
     <Grid Background="{StaticResource SurfaceBrush}">
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="980">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel MaxWidth="1100" Margin="20,18,20,10">
 
-            <TextBlock Text="Welcome to Smart-X!!" FontSize="26" FontWeight="Bold"
-                       Foreground="{StaticResource BrandDarkBrush}" HorizontalAlignment="Center" Margin="0,0,0,4"/>
-            <TextBlock Text="Choose where you would like to go" FontSize="13"
-                       Foreground="{StaticResource MutedTextBrush}" HorizontalAlignment="Center" Margin="0,0,0,28"/>
+                <Border CornerRadius="16" Padding="36,32" Margin="10,0,10,8">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#1E1F29" Offset="0"/>
+                            <GradientStop Color="#27326B" Offset="0.6"/>
+                            <GradientStop Color="#2F6FED" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
 
-            <UniformGrid Rows="1" Columns="3">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-                <Button x:Name="SensorTile" Style="{StaticResource LandingTileStyle}" Click="SensorTile_Click"
-                        ToolTip="Register sensors, simulate telemetry, and attach hardware log files.">
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Welcome to Smart-X!!"
+                                       FontSize="32" FontWeight="Bold" Foreground="White"/>
+                            <TextBlock Margin="0,8,0,16" FontSize="14" TextWrapping="Wrap" MaxWidth="520"
+                                       Foreground="#C9D4F2"
+                                       Text="A mock hybrid IoT ecosystem that simulates distributed environments, and the tools to monitor and manage them."/>
+
+                            <StackPanel Orientation="Horizontal">
+                                <Border Style="{StaticResource HeroChipStyle}">
+                                    <TextBlock Text="Live telemetry" FontSize="11" Foreground="#E6ECFF"/>
+                                </Border>
+                                <Border Style="{StaticResource HeroChipStyle}">
+                                    <TextBlock Text="Mesh routing" FontSize="11" Foreground="#E6ECFF"/>
+                                </Border>
+                                <Border Style="{StaticResource HeroChipStyle}">
+                                    <TextBlock Text="Hardware logs" FontSize="11" Foreground="#E6ECFF"/>
+                                </Border>
+                            </StackPanel>
+
+                            <Border x:Name="StatusStrip" Visibility="Collapsed" Background="#26FFFFFF" CornerRadius="10"
+                                    Padding="12,6" Margin="0,16,0,0" HorizontalAlignment="Left">
+                                <StackPanel Orientation="Horizontal">
+                                    <Ellipse x:Name="ApiStatusDot" Width="9" Height="9" Margin="0,0,8,0"
+                                             Fill="{StaticResource OkBrush}" VerticalAlignment="Center"/>
+                                    <TextBlock x:Name="ApiStatusText" FontSize="12" Foreground="White"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <Canvas Grid.Column="1" Width="330" Height="150" Margin="24,0,0,0" VerticalAlignment="Center">
+                            <Line X1="165" Y1="20" X2="70"  Y2="70"  Stroke="#66FFFFFF" StrokeThickness="1.5"/>
+                            <Line X1="165" Y1="20" X2="260" Y2="70"  Stroke="#66FFFFFF" StrokeThickness="1.5"/>
+                            <Line X1="70"  Y1="70" X2="20"  Y2="122" Stroke="#4DFFFFFF" StrokeThickness="1.5"/>
+                            <Line X1="70"  Y1="70" X2="110" Y2="126" Stroke="#4DFFFFFF" StrokeThickness="1.5"/>
+                            <Line X1="70"  Y1="70" X2="150" Y2="98"  Stroke="#4DFFFFFF" StrokeThickness="1.5"/>
+                            <Line X1="260" Y1="70" X2="205" Y2="130" Stroke="#4DFFFFFF" StrokeThickness="1.5"/>
+                            <Line X1="260" Y1="70" X2="305" Y2="120" Stroke="#4DFFFFFF" StrokeThickness="1.5"/>
+                            <Line X1="150" Y1="98" X2="205" Y2="130" Stroke="#33FFFFFF" StrokeThickness="1.5"/>
+
+                            <Ellipse Width="24" Height="24" Fill="White"     Canvas.Left="153" Canvas.Top="8"/>
+                            <Ellipse Width="18" Height="18" Fill="#9BD6B0"   Canvas.Left="61"  Canvas.Top="61"/>
+                            <Ellipse Width="18" Height="18" Fill="#9BD6B0"   Canvas.Left="251" Canvas.Top="61"/>
+                            <Ellipse Width="12" Height="12" Fill="#B7CDFB"   Canvas.Left="14"  Canvas.Top="116"/>
+                            <Ellipse Width="12" Height="12" Fill="#B7CDFB"   Canvas.Left="104" Canvas.Top="120"/>
+                            <Ellipse Width="12" Height="12" Fill="#B7CDFB"   Canvas.Left="144" Canvas.Top="92"/>
+                            <Ellipse Width="12" Height="12" Fill="#B7CDFB"   Canvas.Left="199" Canvas.Top="124"/>
+                            <Ellipse Width="12" Height="12" Fill="#B7CDFB"   Canvas.Left="299" Canvas.Top="114"/>
+                        </Canvas>
+                    </Grid>
+                </Border>
+
+                <TextBlock Text="Choose where you would like to go" FontSize="16" FontWeight="SemiBold"
+                           Foreground="{StaticResource BrandDarkBrush}" Margin="12,18,0,2"/>
+
+                <UniformGrid Rows="1" Columns="3">
+
+                    <Button x:Name="SensorTile" Style="{StaticResource FeatureCardStyle}"
+                            Tag="{StaticResource BrandBrush}" Click="SensorTile_Click"
+                            ToolTip="Register sensors, simulate telemetry, and attach hardware log files.">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Border Width="52" Height="52" CornerRadius="12" Background="#EAF1FF" HorizontalAlignment="Left" Margin="0,0,0,14">
+                                <TextBlock Text="🛰️" FontFamily="Segoe UI Emoji" FontSize="26" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Grid.Row="1" Text="Sensor Data Ingestion and Telemetry" FontSize="17" FontWeight="SemiBold"
+                                       TextWrapping="Wrap" Foreground="{StaticResource BrandDarkBrush}"/>
+                            <TextBlock Grid.Row="2" Margin="0,6,0,14" FontSize="12.5" TextWrapping="Wrap"
+                                       Foreground="{StaticResource MutedTextBrush}"
+                                       Text="Sensor registration, stream simulations, and hardware logs."/>
+                            <StackPanel Grid.Row="3">
+                                <TextBlock Style="{StaticResource FeatureLineStyle}" Text="✓  Register, edit and delete sensors"/>
+                                <TextBlock Style="{StaticResource FeatureLineStyle}" Text="✓  Simulate readings and anomalies"/>
+                                <TextBlock Style="{StaticResource FeatureLineStyle}" Text="✓  Classify, upload and download logs"/>
+                            </StackPanel>
+                            <TextBlock Grid.Row="4" Margin="0,14,0,0" Text="Open  →" FontWeight="SemiBold"
+                                       Foreground="{StaticResource BrandBrush}"/>
+                        </Grid>
+                    </Button>
+
+                    <Button x:Name="CommandStreamTile" Style="{StaticResource FeatureCardStyle}"
+                            Tag="{StaticResource CommandAccentBrush}" Click="CommandStreamTile_Click"
+                            ToolTip="Watch incoming sensor data live, manage alerts, and manually override sensors.">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Border Width="52" Height="52" CornerRadius="12" Background="#F1EAFE" HorizontalAlignment="Left" Margin="0,0,0,14">
+                                <TextBlock Text="⚡" FontFamily="Segoe UI Emoji" FontSize="26" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Grid.Row="1" Text="Real-Time Command Stream and History" FontSize="17" FontWeight="SemiBold"
+                                       TextWrapping="Wrap" Foreground="{StaticResource BrandDarkBrush}"/>
+                            <TextBlock Grid.Row="2" Margin="0,6,0,14" FontSize="12.5" TextWrapping="Wrap"
+                                       Foreground="{StaticResource MutedTextBrush}"
+                                       Text="Live telemetry, critical alerts, and override access."/>
+                            <StackPanel Grid.Row="3">
+                                <TextBlock Style="{StaticResource FeatureLineStyle}" Text="✓  Live readings with anomalies highlighted"/>
+                                <TextBlock Style="{StaticResource FeatureLineStyle}" Text="✓  Alerts ranked by severity"/>
+                                <TextBlock Style="{StaticResource FeatureLineStyle}" Text="✓  Manual overrides, with undo"/>
+                            </StackPanel>
+                            <TextBlock Grid.Row="4" Margin="0,14,0,0" Text="Open  →" FontWeight="SemiBold"
+                                       Foreground="{StaticResource CommandAccentBrush}"/>
+                        </Grid>
+                    </Button>
+
+                    <Button x:Name="NetworkTopologyTile" Style="{StaticResource FeatureCardStyle}"
+                            Tag="{StaticResource OkBrush}" Click="NetworkTopologyTile_Click"
+                            ToolTip="View network layouts, store historical logs, and see connection algorithms in action">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Border Width="52" Height="52" CornerRadius="12" Background="#E4F5EA" HorizontalAlignment="Left" Margin="0,0,0,14">
+                                <TextBlock Text="🕸️" FontFamily="Segoe UI Emoji" FontSize="26" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Grid.Row="1" Text="Network Topology and Mesh Routing" FontSize="17" FontWeight="SemiBold"
+                                       TextWrapping="Wrap" Foreground="{StaticResource BrandDarkBrush}"/>
+                            <TextBlock Grid.Row="2" Margin="0,6,0,14" FontSize="12.5" TextWrapping="Wrap"
+                                       Foreground="{StaticResource MutedTextBrush}"
+                                       Text="Network topology, historical telemetry, DFS connectivity and Prim routing."/>
+                            <StackPanel Grid.Row="3">
+                                <TextBlock Style="{StaticResource FeatureLineStyle}" Text="✓  The mesh drawn as a graph of sensors"/>
+                                <TextBlock Style="{StaticResource FeatureLineStyle}" Text="✓  Gateway connectivity with depth-first search"/>
+                                <TextBlock Style="{StaticResource FeatureLineStyle}" Text="✓  Power-efficient routes with Prim's algorithm"/>
+                            </StackPanel>
+                            <TextBlock Grid.Row="4" Margin="0,14,0,0" Text="Open  →" FontWeight="SemiBold"
+                                       Foreground="{StaticResource OkBrush}"/>
+                        </Grid>
+                    </Button>
+
+                </UniformGrid>
+
+                <Border Background="{StaticResource CardBrush}" BorderBrush="#E2E5EC" BorderThickness="1"
+                        CornerRadius="14" Padding="24,20" Margin="10,8,10,10">
                     <StackPanel>
-                        <TextBlock Text="🛰️" FontSize="30" HorizontalAlignment="Center" Margin="0,0,0,10"/>
-                        <TextBlock Text="Sensor Data Ingestion&#10;and Telemetry" FontWeight="SemiBold" FontSize="15"
-                                   TextAlignment="Center" TextWrapping="Wrap" Foreground="{StaticResource BrandDarkBrush}"/>
-                        <TextBlock Text="Register sensors, stream simulated readings, and attach logs."
-                                   FontSize="11" Foreground="{StaticResource MutedTextBrush}"
-                                   TextAlignment="Center" TextWrapping="Wrap" Margin="0,8,0,0"/>
-                    </StackPanel>
-                </Button>
+                        <TextBlock Text="How it fits together" FontSize="14" FontWeight="Bold"
+                                   Foreground="{StaticResource BrandDarkBrush}" Margin="0,0,0,14"/>
 
-                <Button x:Name="CommandStreamTile" Style="{StaticResource LandingTileStyle}"
-                        Click="CommandStreamTile_Click"
-                        ToolTip="Watch incoming sensor data live, manage alerts, and manually override sensors.">
-                    <StackPanel>
-                        <TextBlock Text="⚡" FontSize="30" HorizontalAlignment="Center" Margin="0,0,0,10"/>
-                        <TextBlock Text="Real-Time Command Stream&#10;and History" FontWeight="SemiBold" FontSize="15"
-                                   TextAlignment="Center" TextWrapping="Wrap" Foreground="{StaticResource BrandDarkBrush}"/>
-                        <TextBlock Text="Live telemetry, critical alerts, and manual overrides."
-                                   FontSize="11" Foreground="{StaticResource MutedTextBrush}"
-                                   TextAlignment="Center" TextWrapping="Wrap" Margin="0,8,0,0"/>
-                    </StackPanel>
-                </Button>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                <Button x:Name="NetworkTopologyTile" Style="{StaticResource LandingTileStyle}"
-                        Click="UnderContructionTile_Click" 
-                        ToolTip="Network topology and mesh routing (Under Contruction)">
-                    <StackPanel>
-                        <TextBlock Text="🕸️" FontSize="30" HorizontalAlignment="Center" Margin="0,0,0,10"/>
-                        <TextBlock Text="Network Topology&#10;and Mesh Routing" FontWeight="SemiBold" FontSize="15"
-                                   TextAlignment="Center" TextWrapping="Wrap" Foreground="{StaticResource BrandDarkBrush}"/>
-                        <Border Background="#FFF3D6" CornerRadius="10" Padding="8,3" Margin="0,10,0,0" HorizontalAlignment="Center">
-                            <TextBlock Text="Under Construction" FontSize="10" FontWeight="SemiBold" Foreground="{StaticResource WarnBrush}"/>
-                        </Border>
-                    </StackPanel>
-                </Button>
+                            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                <Border Width="30" Height="30" CornerRadius="15" Background="{StaticResource BrandBrush}" VerticalAlignment="Top" Margin="0,0,12,0">
+                                    <TextBlock Text="1" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <StackPanel>
+                                    <TextBlock Text="Register sensors" FontWeight="SemiBold" FontSize="13" Foreground="{StaticResource BrandDarkBrush}"/>
+                                    <TextBlock Text="Add sensors, simulate readings and attach hardware logs." FontSize="12" TextWrapping="Wrap" MaxWidth="230"
+                                               Foreground="{StaticResource MutedTextBrush}" Margin="0,2,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
 
-            </UniformGrid>
-        </StackPanel>
+                            <TextBlock Grid.Column="1" Text="→" FontSize="20" Foreground="#B9C0D0" VerticalAlignment="Center" Margin="14,0"/>
+
+                            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                <Border Width="30" Height="30" CornerRadius="15" Background="{StaticResource CommandAccentBrush}" VerticalAlignment="Top" Margin="0,0,12,0">
+                                    <TextBlock Text="2" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <StackPanel>
+                                    <TextBlock Text="Watch the stream" FontWeight="SemiBold" FontSize="13" Foreground="{StaticResource BrandDarkBrush}"/>
+                                    <TextBlock Text="See readings arrive live, review alerts and override sensors." FontSize="12" TextWrapping="Wrap" MaxWidth="230"
+                                               Foreground="{StaticResource MutedTextBrush}" Margin="0,2,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <TextBlock Grid.Column="3" Text="→" FontSize="20" Foreground="#B9C0D0" VerticalAlignment="Center" Margin="14,0"/>
+
+                            <StackPanel Grid.Column="4" Orientation="Horizontal">
+                                <Border Width="30" Height="30" CornerRadius="15" Background="{StaticResource OkBrush}" VerticalAlignment="Top" Margin="0,0,12,0">
+                                    <TextBlock Text="3" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <StackPanel>
+                                    <TextBlock Text="Explore the mesh" FontWeight="SemiBold" FontSize="13" Foreground="{StaticResource BrandDarkBrush}"/>
+                                    <TextBlock Text="Trace routes to the central server and read a sensor's history." FontSize="12" TextWrapping="Wrap" MaxWidth="230"
+                                               Foreground="{StaticResource MutedTextBrush}" Margin="0,2,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <TextBlock HorizontalAlignment="Center" Margin="10,2,10,14" FontSize="11" FontStyle="Italic"
+                           Foreground="{StaticResource MutedTextBrush}"
+                           Text="Tip: use the Guidance button in the top bar to switch contextual help on or off."/>
+
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

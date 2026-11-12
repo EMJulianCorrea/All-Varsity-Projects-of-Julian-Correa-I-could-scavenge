@@ -1,7 +1,25 @@
 package com.drivemate.sa.ui.screens
 
+import androidx.compose.foundation.layout.navigationBarsPadding
+import android.Manifest
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.material3.Switch
+import com.drivemate.sa.notifications.NotificationPreferences
+import com.drivemate.sa.notifications.RenewalReminderWorker
+import com.drivemate.sa.notifications.SecureNotificationHelper
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricPrompt
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import android.annotation.SuppressLint
-import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -45,7 +63,6 @@ import com.google.firebase.auth.FirebaseUser
 
 private val AccentDark = Color(0xFF2F4A47)
 
-@SuppressLint("ContextCastToActivity")
 @Composable
 fun SettingScreen(
     currentUser: FirebaseUser?,
@@ -58,12 +75,120 @@ fun SettingScreen(
     onLanguageClick: () -> Unit,
     onNotificationClick: () -> Unit
 ) {
-    val activity = LocalContext.current as? Activity
     val context = LocalContext.current
-    var showLanguageDialog by remember { mutableStateOf(false) }
-    val currentLanguageTag = LanguageManager.currentLanguageTag()
-    val currentLanguageName = LanguageManager.currentLanguageDisplayName()
+    val fragmentActivity =
+        context as? FragmentActivity
+    val biometricSuccessText =
+        stringResource(
+            R.string.biometric_auth_success
+        )
 
+    val biometricFailedText =
+        stringResource(
+            R.string.biometric_not_recognised
+        )
+
+    val biometricPromptTitle =
+        stringResource(
+            R.string.biometric_prompt_title
+        )
+
+    val biometricPromptSubtitle =
+        stringResource(
+            R.string.biometric_prompt_subtitle
+        )
+
+    val biometricUnavailableText =
+        stringResource(
+            R.string.biometric_auth_unavailable
+        )
+
+    val biometricCancelText =
+        stringResource(
+            R.string.cancel
+        )
+
+    var biometricAuthMessage by remember {
+        mutableStateOf<String?>(null)
+    }
+
+    val biometricExecutor = remember(context) {
+        ContextCompat.getMainExecutor(context)
+    }
+
+    val biometricPrompt = remember(
+        fragmentActivity,
+        biometricSuccessText,
+        biometricFailedText
+    ) {
+        fragmentActivity?.let { activity ->
+
+            BiometricPrompt(
+                activity,
+                biometricExecutor,
+                object :
+                    BiometricPrompt.AuthenticationCallback() {
+
+                    override fun onAuthenticationSucceeded(
+                        result:
+                        BiometricPrompt.AuthenticationResult
+                    ) {
+                        super.onAuthenticationSucceeded(result)
+
+                        biometricAuthMessage =
+                            biometricSuccessText
+                    }
+
+                    override fun onAuthenticationFailed() {
+                        super.onAuthenticationFailed()
+
+                        biometricAuthMessage =
+                            biometricFailedText
+                    }
+
+                    override fun onAuthenticationError(
+                        errorCode: Int,
+                        errString: CharSequence
+                    ) {
+                        super.onAuthenticationError(
+                            errorCode,
+                            errString
+                        )
+
+                        biometricAuthMessage =
+                            errString.toString()
+                    }
+                }
+            )
+        }
+    }
+
+    val biometricPromptInfo = remember(
+        biometricPromptTitle,
+        biometricPromptSubtitle,
+        biometricCancelText
+    ) {
+        BiometricPrompt.PromptInfo.Builder()
+            .setTitle(
+                biometricPromptTitle
+            )
+            .setSubtitle(
+                biometricPromptSubtitle
+            )
+            .setAllowedAuthenticators(
+                BiometricManager.Authenticators.BIOMETRIC_STRONG
+            )
+            .setNegativeButtonText(
+                biometricCancelText
+            )
+            .build()
+    }
+    var showLanguageDialog by remember { mutableStateOf(false) }
+    val currentLanguageTag =
+        LanguageManager.currentLanguageTag(context)
+
+    val currentLanguageName =
+        LanguageManager.currentLanguageDisplayName(context)
     var biometricStatus by remember { mutableStateOf(BiometricStatusChecker.check(context)) }
     // Re-check whenever this screen comes back to the foreground, so
     // enrolling a fingerprint in system Settings and returning here
@@ -72,17 +197,58 @@ fun SettingScreen(
         biometricStatus = BiometricStatusChecker.check(context)
     }
 
+    var remindersEnabled by remember {
+        mutableStateOf(
+            NotificationPreferences.isEnabled(context) &&
+                    SecureNotificationHelper.hasPermission(context)
+        )
+    }
+    var notificationMessage by remember { mutableStateOf<String?>(null) }
+    val permissionDeniedText =
+        stringResource(R.string.notification_permission_denied)
+
+    fun applyReminders(enabled: Boolean) {
+        NotificationPreferences.setEnabled(context, enabled)
+        remindersEnabled = enabled
+        if (enabled) {
+            SecureNotificationHelper.createChannel(context)
+            RenewalReminderWorker.schedule(context)
+        } else {
+            RenewalReminderWorker.cancel(context)
+        }
+    }
+
+    val notificationPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) {
+            notificationMessage = null
+            applyReminders(true)
+        } else {
+            applyReminders(false)
+            notificationMessage = permissionDeniedText
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .navigationBarsPadding()
             .padding(horizontal = 24.dp, vertical = 20.dp)
     ) {
         // Back chevron
-        Text(
-            text = "‹",
-            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier.clickable(onClick = onBackClick)
-        )
+        IconButton(
+            onClick = onBackClick
+        ) {
+            Icon(
+                imageVector = Icons.Filled.ArrowBack,
+                contentDescription = stringResource(
+                    R.string.back
+                ),
+                tint = MaterialTheme.colorScheme.onBackground
+            )
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -153,15 +319,85 @@ fun SettingScreen(
                 onLanguageClick()
             }
         )
-        SettingsRow(title = stringResource(R.string.notification_label), onClick = onNotificationClick)
+        NotificationToggleRow(
+            title = stringResource(R.string.notification_label),
+            subtitle = if (remindersEnabled) {
+                stringResource(R.string.notification_reminders_on)
+            } else {
+                stringResource(R.string.notification_reminders_off)
+            },
+            checked = remindersEnabled,
+            onCheckedChange = { wantsOn ->
+                onNotificationClick()
+                notificationMessage = null
+
+                if (!wantsOn) {
+                    applyReminders(false)
+                } else if (
+                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+                    !SecureNotificationHelper.hasPermission(context)
+                ) {
+                    notificationPermissionLauncher.launch(
+                        Manifest.permission.POST_NOTIFICATIONS
+                    )
+                } else if (!SecureNotificationHelper.hasPermission(context)) {
+                    notificationMessage = permissionDeniedText
+                } else {
+                    applyReminders(true)
+                }
+            }
+        )
+
+        notificationMessage?.let { message ->
+            Text(
+                text = message,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.error
+            )
+        }
 
         Spacer(modifier = Modifier.height(28.dp))
 
         SectionHeader(title = stringResource(R.string.security_header))
         BiometricStatusRow(
             status = biometricStatus,
-            onFixClick = { context.startActivity(BiometricStatusChecker.enrollIntent()) }
+
+            onFixClick = {
+                context.startActivity(
+                    BiometricStatusChecker.enrollIntent()
+                )
+            },
+
+            onAuthenticateClick = {
+
+                biometricAuthMessage = null
+
+                if (biometricPrompt != null) {
+                    biometricPrompt.authenticate(
+                        biometricPromptInfo
+                    )
+                } else {
+                    biometricAuthMessage =
+                        biometricUnavailableText
+                }
+            }
         )
+
+        biometricAuthMessage?.let { message ->
+
+            Spacer(
+                modifier = Modifier.height(8.dp)
+            )
+
+            Text(
+                text = message,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.primary
+            )
+
+        }
+        Spacer(
+            modifier = Modifier.height(32.dp))
     }
 
     if (showLanguageDialog) {
@@ -169,11 +405,12 @@ fun SettingScreen(
             currentTag = currentLanguageTag,
             onDismiss = { showLanguageDialog = false },
             onLanguageSelected = { tag ->
-                LanguageManager.setLanguage(tag)
+                LanguageManager.setLanguage(
+                    context,
+                    tag
+                )
+
                 showLanguageDialog = false
-                // Forces every screen (including this one) to recompose
-                // against the newly applied locale's resources.
-                activity?.recreate()
             }
         )
     }
@@ -240,12 +477,49 @@ private fun SettingsRow(title: String, onClick: () -> Unit) {
     }
 }
 
+@Composable
+private fun NotificationToggleRow(
+    title: String,
+    subtitle: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 14.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Spacer(modifier = Modifier.height(2.dp))
+            Text(
+                text = subtitle,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+        Switch(
+            checked = checked,
+            onCheckedChange = onCheckedChange
+        )
+    }
+}
+
 /**
  * Informational row - not a toggle. Shows the device's current biometric
  * state, and (only when it's fixable) a "Set up" link into system Settings.
  */
 @Composable
-private fun BiometricStatusRow(status: BiometricStatus, onFixClick: () -> Unit) {
+private fun BiometricStatusRow(
+    status: BiometricStatus,
+    onFixClick: () -> Unit,
+    onAuthenticateClick: () -> Unit
+){
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -268,6 +542,7 @@ private fun BiometricStatusRow(status: BiometricStatus, onFixClick: () -> Unit) 
                     MaterialTheme.colorScheme.error
                 }
             )
+
         }
 
         when {
@@ -282,11 +557,19 @@ private fun BiometricStatusRow(status: BiometricStatus, onFixClick: () -> Unit) 
 
             status.isAvailable -> {
                 Text(
-                    text = "\u2713", // checkmark
-                    color = Color(0xFF2E7D32),
-                    fontSize = 18.sp
+                    text = stringResource(
+                        R.string.biometric_authenticate_action
+                    ),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.clickable(
+                        onClick = onAuthenticateClick
+                    )
                 )
-            }
+                Spacer(
+                    modifier = Modifier.height(32.dp)
+                )}
+
         }
     }
 }

@@ -1,5 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="vehicle_profile_subtitle">Suid-Afrikaanse voertuigprofiel</string>
+    <string name="vehicle_nickname">Voertuigbynaam</string>
+    <string name="vehicle_make">Fabrikaat</string>
+    <string name="vehicle_model">Model</string>
+    <string name="vehicle_year">Jaar</string>
+    <string name="registration_number">Registrasienommer</string>
+    <string name="fuel_type">Brandstoftipe</string>
+    <string name="current_odometer">Huidige kilometerteller (km)</string>
+    <string name="licence_renewal_date">Lisensiehernuwingsdatum</string>
+
+    <string name="example_daily_car">bv. Daaglikse motor</string>
+    <string name="example_toyota">bv. Toyota</string>
+    <string name="example_corolla">bv. Corolla</string>
+    <string name="example_vehicle_year">bv. 2022</string>
+    <string name="example_registration">bv. ND 123-456</string>
+    <string name="fuel_type_options">Petrol / Diesel / Hibried / Elektries</string>
+    <string name="example_odometer">bv. 45000</string>
+    <string name="date_format">JJJJ-MM-DD</string>
+
+    <string name="save_vehicle">Stoor voertuig</string>
+    <string name="saving_vehicle">Voertuig word gestoor...</string>
+    <string name="back">Terug</string>
+
+    <string name="error_vehicle_make_required">Voer asseblief die voertuigfabrikaat in.</string>
+    <string name="error_vehicle_model_required">Voer asseblief die voertuigmodel in.</string>
+    <string name="error_vehicle_year_invalid">Voer asseblief ’n geldige voertuigjaar in.</string>
+    <string name="error_registration_required">Voer asseblief die registrasienommer in.</string>
+    <string name="error_fuel_type_required">Voer asseblief die brandstoftipe in.</string>
+    <string name="error_odometer_invalid">Voer asseblief ’n geldige kilometertellerlesing in.</string>
+    <string name="error_renewal_date_required">Voer asseblief die lisensiehernuwingsdatum in.</string>
+    <string name="error_renewal_date_format">Gebruik JJJJ-MM-DD vir die lisensiehernuwingsdatum.</string>
+    <string name="my_vehicles">My voertuie</string>
+    <string name="vehicle_profiles_subtitle">Suid-Afrikaanse voertuigprofiele</string>
+    <string name="loading_vehicles">Voertuie word gelaai...</string>
+    <string name="try_again">Probeer weer</string>
+    <string name="no_vehicles">Jy het nog geen voertuie bygevoeg nie.</string>
+
+    <string name="add_vehicle">Voeg voertuig by</string>
+    <string name="vehicle_health">Voertuiggesondheid</string>
+    <string name="running_costs">Bedryfskoste</string>
+    <string name="settings">Instellings</string>
+    <string name="sign_out">Meld af</string>
+
+    <string name="fuel_label">Brandstof: %1$s</string>
+    <string name="licence_renewal">Lisensiehernuwing</string>
+    <string name="renewal_unavailable">Kan nie hernuwingstatus bereken nie.</string>
+    <string name="renewal_overdue">Lisensiehernuwing is %1$d dae agterstallig</string>
+    <string name="renewal_due_today">Lisensiehernuwing is vandag verskuldig</string>
+    <string name="renewal_due_soon">Lisensiehernuwing binnekort: %1$d dae oor</string>
+    <string name="renewal_days_remaining">%1$d dae tot hernuwing</string>
+    <string name="odometer_value">%1$s km</string>
     <string name="account_title">Rekening</string>
     <string name="not_signed_in">Nie aangemeld nie</string>
     <string name="view_full_profile">Bekyk volledige profiel</string>
@@ -15,4 +66,117 @@
     <string name="security_header">Sekuriteit</string>
     <string name="biometric_login_label">Biometriese aanmelding</string>
     <string name="biometric_set_up_action">Stel op</string>
+    <string name="add_maintenance_record">Voeg onderhoudsrekord by</string>
+    <string name="delete">Verwyder</string>
+
+    <string name="maintenance_upcoming_count">Komende (%1$d)</string>
+    <string name="maintenance_history_count">Geskiedenis (%1$d)</string>
+    <string name="no_upcoming_maintenance">Geen komende onderhoud nie — alles is op datum.</string>
+    <string name="no_service_history">Nog geen diensgeskiedenis nie.</string>
+
+    <string name="maintenance_type">Tipe</string>
+    <string name="maintenance_title">Titel (bv. Olievervanging)</string>
+    <string name="maintenance_mileage">Kilometerstand (km)</string>
+    <string name="maintenance_cost">Koste (R)</string>
+    <string name="maintenance_notes">Notas (opsioneel)</string>
+    <string name="maintenance_upcoming_reminder">Stel as ’n komende herinnering in plaas van ’n vorige rekord</string>
+    <string name="save">Stoor</string>
+
+    <string name="maintenance_type_service">Diens</string>
+    <string name="maintenance_type_repair">Herstelwerk</string>
+    <string name="maintenance_type_inspection">Inspeksie</string>
+    <string name="maintenance_type_pick_up">Afhaal</string>
+    <string name="maintenance_type_other">Ander</string>
+    <string name="maintenance_due_date">Verskuldig %1$s</string>
+    <string name="maintenance_cost_value">R%1$,.2f</string>
+    <string name="maintenance_overdue">Agterstallig</string>
+    <string name="running_costs_no_vehicle">Voeg eers \'n voertuig by voordat bedryfskoste aangeteken word.</string>
+    <string name="vehicle_label">Voertuig</string>
+    <string name="select_vehicle">Kies voertuig</string>
+
+    <string name="total_running_cost">Totale bedryfskoste</string>
+    <string name="fuel_spend">Brandstofkoste</string>
+    <string name="other_expenses">Ander uitgawes</string>
+    <string name="fuel_purchased">Brandstof aangekoop</string>
+    <string name="average_fuel_price">Gemiddelde brandstofprys</string>
+    <string name="estimated_consumption">Geskatte verbruik</string>
+    <string name="not_enough_data">Nie genoeg data nie</string>
+
+    <string name="add_fuel">Voeg brandstof by</string>
+    <string name="add_expense">Voeg uitgawe by</string>
+    <string name="fuel_history">Brandstofgeskiedenis</string>
+    <string name="expense_history">Uitgawegeskiedenis</string>
+    <string name="no_fuel_entries">Nog geen brandstofinskrywings aangeteken nie.</string>
+    <string name="no_expenses">Nog geen uitgawes aangeteken nie.</string>
+
+    <string name="litres_value">%1$.2f L</string>
+    <string name="odometer_km_value">%1$d km</string>
+    <string name="price_per_litre_value">%1$s / L</string>
+    <string name="consumption_value">%1$.2f L/100 km</string>
+
+    <string name="full_tank">Vol tenk</string>
+    <string name="partial_fill">Gedeeltelike vulsel</string>
+
+    <string name="date_yyyy_mm_dd">Datum (JJJJ-MM-DD)</string>
+    <string name="odometer_km">Kilometerteller (km)</string>
+    <string name="litres">Liter</string>
+    <string name="price_per_litre">Prys per liter</string>
+
+    <string name="expense_category">Kategorie bv. Versekering, Bande</string>
+    <string name="expense_amount">Bedrag (R)</string>
+    <string name="description">Beskrywing</string>
+
+    <string name="cancel">Kanselleer</string>
+
+    <string name="error_invalid_fuel_entry">Voer \'n geldige kilometerteller, liters en brandstofprys in.</string>
+    <string name="error_invalid_expense">Voer \'n kategorie en geldige bedrag in.</string>
+    <string name="checking_api">API word nagegaan...</string>
+    <string name="api_connected">API is gekoppel</string>
+    <string name="api_connection_failed">API-verbinding het misluk</string>
+
+    <string name="cloud_not_tested">Wolkdatabasis is nog nie getoets nie</string>
+    <string name="cloud_database_connected">Wolkdatabasis is gekoppel</string>
+    <string name="cloud_record_not_returned">Rekord is geskep, maar geen rekords is teruggestuur nie.</string>
+    <string name="cloud_database_test_failed">Wolkdatabasistoets het misluk</string>
+    <string name="testing_cloud_database">Wolkdatabasis word getoets...</string>
+    <string name="test_cloud_database">Toets wolkdatabasis</string>
+
+    <string name="your_vehicle_companion">Jou voertuigmetgesel</string>
+    <string name="sign_in_to_continue">Meld aan om voort te gaan</string>
+    <string name="sign_in_with_google">Meld aan met Google</string>
+
+    <string name="failed_load_vehicles">Kon nie voertuie laai nie.</string>
+    <string name="vehicle_saved_message">Voertuig gestoor: %1$s %2$s</string>
+    <string name="failed_save_vehicle">Kon nie voertuig stoor nie.</string>
+
+    <string name="google_sign_in_unsupported">Google-aanmelding het ’n nie-ondersteunde aanmeldbewys teruggestuur.</string>
+    <string name="google_sign_in_failed">Google-aanmelding het misluk. Probeer asseblief weer.</string>
+    <string name="firebase_authentication_failed">Firebase-verifikasie het misluk.</string>
+    <string name="biometric_auth_success">Biometriese verifikasie was suksesvol.</string>
+    <string name="biometric_not_recognised">Biometrie is nie herken nie. Probeer weer.</string>
+    <string name="biometric_prompt_title">DriveMate biometriese verifikasie</string>
+    <string name="biometric_prompt_subtitle">Bevestig jou identiteit met biometrie</string>
+    <string name="biometric_auth_unavailable">Biometriese verifikasie is nie beskikbaar nie.</string>
+    <string name="biometric_authenticate_action">Verifieer</string>
+    <string name="welcome">Welkom</string>
+    <string name="cloud_test_message">Hallo vanaf DriveMate Android</string>
+    <string name="drivemate_user">DriveMate-gebruiker</string>
+
+    <string name="notification_channel_name">DriveMate-herinnerings</string>
+    <string name="notification_channel_description">Lisensie-hernuwingsherinnerings vir jou voertuie</string>
+    <string name="notification_public_title">DriveMate</string>
+    <string name="notification_public_text">Jy het \'n voertuigherinnering. Ontsluit jou foon om dit te sien.</string>
+    <string name="notification_reminders_on">Herinnerings aan. Besonderhede is op die sluitskerm versteek.</string>
+    <string name="notification_reminders_off">Herinnerings af</string>
+    <string name="notification_permission_denied">Kennisgewingtoestemming is geweier. Aktiveer dit in die stelselinstellings om herinnerings te ontvang.</string>
+    <string name="email_label">E-pos</string>
+    <string name="password_label">Wagwoord</string>
+    <string name="sign_in_with_email">Meld aan</string>
+    <string name="create_account">Skep rekening</string>
+    <string name="login_fields_required">Voer jou e-pos en wagwoord in.</string>
+    <string name="login_password_too_short">Wagwoord moet minstens 6 karakters wees.</string>
+    <string name="login_invalid_credentials">Verkeerde e-pos of wagwoord. %1$d pogings oor.</string>
+    <string name="login_locked_out">Te veel mislukte pogings. Probeer weer oor %1$d minute.</string>
+    <string name="login_network_error">Kon nie die aanmeldingsdiens bereik nie. Kontroleer jou verbinding.</string>
+    <string name="account_creation_failed">Kon nie die rekening skep nie. Probeer asseblief weer.</string>
 </resources>

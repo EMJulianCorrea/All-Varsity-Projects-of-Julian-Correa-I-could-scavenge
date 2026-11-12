@@ -17,8 +17,11 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.drivemate.sa.R
 import com.drivemate.sa.network.Vehicle
 import com.drivemate.sa.util.RenewalStatus
 import com.drivemate.sa.util.VehicleRenewalUtils
@@ -37,55 +40,78 @@ fun VehicleProfileScreen(
     onSignOut: () -> Unit,
     onOpenMaintenance: () -> Unit,
     onOpenRunningCosts: () -> Unit,
-){
+    onOpenSettings: () -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .padding(24.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement =
+            Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            text = "My Vehicles",
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold
+            text = stringResource(
+                R.string.my_vehicles
+            ),
+            style =
+                MaterialTheme.typography.headlineMedium,
+            fontWeight =
+                FontWeight.Bold
         )
 
         Text(
-            text = "South African vehicle profiles",
-            style = MaterialTheme.typography.bodyMedium
+            text = stringResource(
+                R.string.vehicle_profiles_subtitle
+            ),
+            style =
+                MaterialTheme.typography.bodyMedium
         )
 
         statusMessage?.let { message ->
             Text(
                 text = message,
-                color = MaterialTheme.colorScheme.primary,
-                fontWeight = FontWeight.Medium
+                color =
+                    MaterialTheme.colorScheme.primary,
+                fontWeight =
+                    FontWeight.Medium
             )
         }
 
         when {
             isLoading -> {
-                Text("Loading vehicles...")
+                Text(
+                    stringResource(
+                        R.string.loading_vehicles
+                    )
+                )
             }
 
             errorMessage != null -> {
                 Text(
                     text = errorMessage,
-                    color = MaterialTheme.colorScheme.error
+                    color =
+                        MaterialTheme.colorScheme.error
                 )
 
                 Button(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier =
+                        Modifier.fillMaxWidth(),
                     onClick = onRefresh
                 ) {
-                    Text("Try Again")
+                    Text(
+                        stringResource(
+                            R.string.try_again
+                        )
+                    )
                 }
             }
 
             vehicles.isEmpty() -> {
                 Text(
-                    text = "You have not added any vehicles yet."
+                    text = stringResource(
+                        R.string.no_vehicles
+                    )
                 )
             }
 
@@ -96,38 +122,81 @@ fun VehicleProfileScreen(
             }
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(
+            modifier = Modifier.height(8.dp)
+        )
 
         Button(
-            modifier = Modifier.fillMaxWidth(),
+            modifier =
+                Modifier.fillMaxWidth(),
             onClick = onAddVehicle
         ) {
-            Text("Add Vehicle")
+            Text(
+                stringResource(
+                    R.string.add_vehicle
+                )
+            )
         }
+
         Button(
-            modifier = Modifier.fillMaxWidth(),
+            modifier =
+                Modifier.fillMaxWidth(),
             onClick = onOpenMaintenance
         ) {
-            Text("Vehicle Health")
+            Text(
+                stringResource(
+                    R.string.vehicle_health
+                )
+            )
         }
+
         Spacer(
             modifier = Modifier.height(8.dp)
         )
 
         Button(
             onClick = onOpenRunningCosts,
-            modifier = Modifier.fillMaxWidth()
+            modifier =
+                Modifier.fillMaxWidth()
         ) {
-            Text("Running Costs")
-        }
-        OutlinedButton(
-            modifier = Modifier.fillMaxWidth(),
-            onClick = onSignOut
-        ) {
-            Text("Sign out")
+            Text(
+                stringResource(
+                    R.string.running_costs
+                )
+            )
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(
+            modifier = Modifier.height(8.dp)
+        )
+
+        Button(
+            onClick = onOpenSettings,
+            modifier =
+                Modifier.fillMaxWidth()
+        ) {
+            Text(
+                stringResource(
+                    R.string.settings
+                )
+            )
+        }
+
+        OutlinedButton(
+            modifier =
+                Modifier.fillMaxWidth(),
+            onClick = onSignOut
+        ) {
+            Text(
+                stringResource(
+                    R.string.sign_out
+                )
+            )
+        }
+
+        Spacer(
+            modifier = Modifier.height(24.dp)
+        )
     }
 }
 
@@ -135,9 +204,15 @@ fun VehicleProfileScreen(
 private fun VehicleCard(
     vehicle: Vehicle
 ) {
+    val configuration =
+        LocalConfiguration.current
+
+    val locale =
+        configuration.locales[0]
+
     val numberFormatter =
         NumberFormat.getIntegerInstance(
-            Locale("en", "ZA")
+            locale
         )
 
     val daysRemaining =
@@ -147,104 +222,150 @@ private fun VehicleCard(
 
     val formattedRenewalDate =
         formatRenewalDate(
-            vehicle.licenceRenewalDate
+            vehicle.licenceRenewalDate,
+            locale
         )
 
     Card(
-        modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 4.dp
-        )
+        modifier =
+            Modifier.fillMaxWidth(),
+        elevation =
+            CardDefaults.cardElevation(
+                defaultElevation = 4.dp
+            )
     ) {
         Column(
-            modifier = Modifier.padding(20.dp),
+            modifier =
+                Modifier.padding(20.dp),
             verticalArrangement =
                 Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                text = vehicle.nickname.ifBlank {
-                    "${vehicle.make} ${vehicle.model}"
-                },
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold
+                text =
+                    vehicle.nickname.ifBlank {
+                        "${vehicle.make} ${vehicle.model}"
+                    },
+                style =
+                    MaterialTheme.typography.titleLarge,
+                fontWeight =
+                    FontWeight.Bold
             )
 
             Text(
                 text =
-                    "${vehicle.make} ${vehicle.model} • ${vehicle.year}",
-                style = MaterialTheme.typography.bodyLarge
+                    "${vehicle.make} " +
+                            "${vehicle.model} " +
+                            "\u2022 ${vehicle.year}",
+                style =
+                    MaterialTheme.typography.bodyLarge
             )
-
-            Text(
-                text = vehicle.registrationNumber,
-                style = MaterialTheme.typography.titleMedium
-            )
-
-            Spacer(modifier = Modifier.height(4.dp))
 
             Text(
                 text =
-                    "${numberFormatter.format(vehicle.odometerKm)} km"
+                    vehicle.registrationNumber,
+                style =
+                    MaterialTheme.typography.titleMedium
+            )
+
+            Spacer(
+                modifier = Modifier.height(4.dp)
             )
 
             Text(
-                text = "Fuel: ${vehicle.fuelType}"
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = "Licence renewal",
-                fontWeight = FontWeight.Bold
+                text = stringResource(
+                    R.string.odometer_value,
+                    numberFormatter.format(
+                        vehicle.odometerKm
+                    )
+                )
             )
 
             Text(
-                text = formattedRenewalDate
+                text = stringResource(
+                    R.string.fuel_label,
+                    vehicle.fuelType
+                )
+            )
+
+            Spacer(
+                modifier = Modifier.height(8.dp)
+            )
+
+            Text(
+                text = stringResource(
+                    R.string.licence_renewal
+                ),
+                fontWeight =
+                    FontWeight.Bold
+            )
+
+            Text(
+                text =
+                    formattedRenewalDate
             )
 
             if (daysRemaining == null) {
                 Text(
-                    text = "Unable to calculate renewal status.",
-                    color = MaterialTheme.colorScheme.error
+                    text = stringResource(
+                        R.string.renewal_unavailable
+                    ),
+                    color =
+                        MaterialTheme.colorScheme.error
                 )
             } else {
                 when (
-                    VehicleRenewalUtils.renewalStatus(
-                        daysRemaining
-                    )
+                    VehicleRenewalUtils
+                        .renewalStatus(
+                            daysRemaining
+                        )
                 ) {
                     RenewalStatus.OVERDUE -> {
                         Text(
-                            text =
-                                "Licence renewal overdue by " +
-                                        "${-daysRemaining} days",
-                            color = MaterialTheme.colorScheme.error,
-                            fontWeight = FontWeight.Bold
+                            text = stringResource(
+                                R.string.renewal_overdue,
+                                -daysRemaining
+                            ),
+                            color =
+                                MaterialTheme.colorScheme
+                                    .error,
+                            fontWeight =
+                                FontWeight.Bold
                         )
                     }
 
                     RenewalStatus.DUE_TODAY -> {
                         Text(
-                            text = "Licence renewal is due today",
-                            color = MaterialTheme.colorScheme.error,
-                            fontWeight = FontWeight.Bold
+                            text = stringResource(
+                                R.string.renewal_due_today
+                            ),
+                            color =
+                                MaterialTheme.colorScheme
+                                    .error,
+                            fontWeight =
+                                FontWeight.Bold
                         )
                     }
 
                     RenewalStatus.DUE_SOON -> {
                         Text(
-                            text =
-                                "Licence renewal due soon: " +
-                                        "$daysRemaining days remaining",
-                            color = MaterialTheme.colorScheme.error,
-                            fontWeight = FontWeight.Bold
+                            text = stringResource(
+                                R.string.renewal_due_soon,
+                                daysRemaining
+                            ),
+                            color =
+                                MaterialTheme.colorScheme
+                                    .error,
+                            fontWeight =
+                                FontWeight.Bold
                         )
                     }
 
                     RenewalStatus.OK -> {
                         Text(
-                            text =
-                                "$daysRemaining days until renewal"
+                            text = stringResource(
+                                R.string.renewal_days_remaining,
+                                daysRemaining
+                            )
                         )
                     }
                 }
@@ -254,7 +375,8 @@ private fun VehicleCard(
 }
 
 private fun formatRenewalDate(
-    dateValue: String
+    dateValue: String,
+    locale: Locale
 ): String {
     return try {
         val inputFormatter =
@@ -266,7 +388,7 @@ private fun formatRenewalDate(
         val outputFormatter =
             SimpleDateFormat(
                 "d MMM yyyy",
-                Locale("en", "ZA")
+                locale
             )
 
         val date =

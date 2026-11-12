@@ -54,4 +54,29 @@ public class TableOrderRepository : IOrderRepository
         await _tableClient.UpdateEntityAsync(entity, entity.ETag, TableUpdateMode.Replace, cancellationToken);
         _logger.LogInformation("Order {OrderId} status updated to {Status}", orderId, status);
     }
+
+    public async Task<IReadOnlyList<OrderEntity>> GetActiveOrdersAsync(CancellationToken cancellationToken = default)
+    {
+        // Practice #8: filter server-side (not Collected) rather than pulling everything
+        // back and filtering in C#.
+        var results = new List<OrderEntity>();
+        await foreach (var entity in _tableClient.QueryAsync<OrderEntity>(
+            filter: "Status ne 'Collected'", cancellationToken: cancellationToken))
+        {
+            results.Add(entity);
+        }
+        return results;
+    }
+
+    public async Task<OrderEntity?> FindByOrderIdAsync(string orderId, CancellationToken cancellationToken = default)
+    {
+        // RowKey-only lookup since the caller (GetOrderStatus) only has the OrderId, not
+        // the OrderDate partition - scans across partitions, acceptable at this scale.
+        await foreach (var entity in _tableClient.QueryAsync<OrderEntity>(
+            filter: $"RowKey eq '{orderId}'", cancellationToken: cancellationToken))
+        {
+            return entity;
+        }
+        return null;
+    }
 }

@@ -1,7 +1,6 @@
 using Smart_X.backend.Models;
 
 namespace Smart_X.backend.Services;
-
 public static class LogClassifier
 {
     private static readonly string[] FirmwareExtensions = { ".bin", ".hex", ".fw" };

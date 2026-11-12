@@ -33,6 +33,7 @@ public partial class MainWindow : Window
             LandingPage => "",
             RegisterDevice => "/  Sensor Data Ingestion and Telemetry",
             CommandStream => "/  Real-Time Command Stream and History",
+            NetworkTopology => "/  Network Topology and Mesh Routing",
             _ => ""
         };
     }
@@ -45,8 +46,6 @@ public partial class MainWindow : Window
     {
         GuidanceEnabled = GuidanceToggle.IsChecked == true;
         GuidanceToggle.Content = GuidanceEnabled ? "Guidance: On" : "Guidance: Off";
-        // WPF raises Checked while the window is still loading (IsChecked="True" in the XAML), and at that
-        // point MainFrame is declared further down the XAML and does not exist yet. Hence the "?.".
         if (MainFrame?.Content is IGuidanceAware currentPage)
             currentPage.RefreshGuidance();
     }

@@ -27,3 +27,7 @@ ENV QueueStorageConnection="DefaultEndpointsProtocol=http;AccountName=devstoreac
 
 
 #Image has been pushed to Docker Hub (Jordan)
+
+#Built and tag the v2.0 image
+
+#Verify Docker Compose end-to-end has been done 

@@ -2,14 +2,13 @@ package com.drivemate.sa.biometric
 
 import android.content.Context
 import android.content.Intent
-import android.hardware.biometrics.BiometricManager
-import android.hardware.biometrics.BiometricManager.Authenticators.BIOMETRIC_STRONG
-import android.hardware.biometrics.BiometricManager.Authenticators.DEVICE_CREDENTIAL
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import android.os.Build
 import android.provider.Settings
 
-private const val ALLOWED_AUTHENTICATORS = BIOMETRIC_STRONG or DEVICE_CREDENTIAL
-
+private const val ALLOWED_AUTHENTICATORS =
+    BIOMETRIC_STRONG
 enum class BiometricStatusKind {
     AVAILABLE,
     NO_HARDWARE,

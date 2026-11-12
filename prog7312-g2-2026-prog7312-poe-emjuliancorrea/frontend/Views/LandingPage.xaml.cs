@@ -22,6 +22,11 @@ public partial class LandingPage : Page
     {
         _owner.NavigateTo(new CommandStream());
     }
+    private void NetworkTopologyTile_Click(object sender, RoutedEventArgs e)
+    {
+        _owner.NavigateTo(new NetworkTopology());
+    }
+
     private void UnderContructionTile_Click(object sender, RoutedEventArgs e)
     {
         var tileName = (sender as Button)?.Name switch

@@ -1,5 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="vehicle_profile_subtitle">Iphrofayela yemoto yaseNingizimu Afrika</string>
+    <string name="vehicle_nickname">Igama lesidlaliso lemoto</string>
+    <string name="vehicle_make">Uhlobo lomkhiqizi</string>
+    <string name="vehicle_model">Imodeli</string>
+    <string name="vehicle_year">Unyaka</string>
+    <string name="registration_number">Inombolo yokubhaliswa</string>
+    <string name="fuel_type">Uhlobo lukaphethiloli</string>
+    <string name="current_odometer">Ibanga lamanje (km)</string>
+    <string name="licence_renewal_date">Usuku lokuvuselela ilayisense</string>
+
+    <string name="example_daily_car">isb. Imoto yansuku zonke</string>
+    <string name="example_toyota">isb. Toyota</string>
+    <string name="example_corolla">isb. Corolla</string>
+    <string name="example_vehicle_year">isb. 2022</string>
+    <string name="example_registration">isb. ND 123-456</string>
+    <string name="fuel_type_options">Uphethiloli / Udizili / Hybrid / Ugesi</string>
+    <string name="example_odometer">isb. 45000</string>
+    <string name="date_format">YYYY-MM-DD</string>
+
+    <string name="save_vehicle">Londoloza imoto</string>
+    <string name="saving_vehicle">Imoto iyalondolozwa...</string>
+    <string name="back">Emuva</string>
+
+    <string name="error_vehicle_make_required">Sicela ufake uhlobo lomkhiqizi wemoto.</string>
+    <string name="error_vehicle_model_required">Sicela ufake imodeli yemoto.</string>
+    <string name="error_vehicle_year_invalid">Sicela ufake unyaka wemoto ovumelekile.</string>
+    <string name="error_registration_required">Sicela ufake inombolo yokubhaliswa.</string>
+    <string name="error_fuel_type_required">Sicela ufake uhlobo lukaphethiloli.</string>
+    <string name="error_odometer_invalid">Sicela ufake ibanga le-odometer elivumelekile.</string>
+    <string name="error_renewal_date_required">Sicela ufake usuku lokuvuselela ilayisense.</string>
+    <string name="error_renewal_date_format">Sebenzisa YYYY-MM-DD ngosuku lokuvuselela ilayisense.</string>
+    <string name="my_vehicles">Izimoto zami</string>
+    <string name="vehicle_profiles_subtitle">Amaphrofayela ezimoto zaseNingizimu Afrika</string>
+    <string name="loading_vehicles">Kulayishwa izimoto...</string>
+    <string name="try_again">Zama futhi</string>
+    <string name="no_vehicles">Awukangezi zimoto okwamanje.</string>
+
+    <string name="add_vehicle">Engeza imoto</string>
+    <string name="vehicle_health">Isimo semoto</string>
+    <string name="running_costs">Izindleko zokusebenzisa</string>
+    <string name="settings">Izilungiselelo</string>
+    <string name="sign_out">Phuma</string>
+
+    <string name="fuel_label">Uphethiloli: %1$s</string>
+    <string name="licence_renewal">Ukuvuselelwa kwelayisense</string>
+    <string name="renewal_unavailable">Ayikwazi ukubala isimo sokuvuselelwa.</string>
+    <string name="renewal_overdue">Ukuvuselelwa kwelayisense kudlule ngezinsuku ezingu-%1$d</string>
+    <string name="renewal_due_today">Ukuvuselelwa kwelayisense kufanele kwenziwe namuhla</string>
+    <string name="renewal_due_soon">Ukuvuselelwa kwelayisense kusondele: kusele izinsuku ezingu-%1$d</string>
+    <string name="renewal_days_remaining">Kusele izinsuku ezingu-%1$d ngaphambi kokuvuselelwa</string>
+    <string name="odometer_value">%1$s km</string>
     <string name="account_title">I-akhawunti</string>
     <string name="not_signed_in">Awungenile</string>
     <string name="view_full_profile">Buka iphrofayela ephelele</string>
@@ -15,4 +66,117 @@
     <string name="security_header">Ukuphepha</string>
     <string name="biometric_login_label">Ukungena nge-biometric</string>
     <string name="biometric_set_up_action">Setha</string>
+    <string name="add_maintenance_record">Engeza irekhodi lokulungisa</string>
+    <string name="delete">Susa</string>
+
+    <string name="maintenance_upcoming_count">Okuzayo (%1$d)</string>
+    <string name="maintenance_history_count">Umlando (%1$d)</string>
+    <string name="no_upcoming_maintenance">Akukho ukulungiswa okuzayo — konke kusesikhathini.</string>
+    <string name="no_service_history">Awukho umlando wesevisi okwamanje.</string>
+
+    <string name="maintenance_type">Uhlobo</string>
+    <string name="maintenance_title">Isihloko (isb. Ukushintsha uwoyela)</string>
+    <string name="maintenance_mileage">Ibanga (km)</string>
+    <string name="maintenance_cost">Izindleko (R)</string>
+    <string name="maintenance_notes">Amanothi (uyazikhethela)</string>
+    <string name="maintenance_upcoming_reminder">Setha njengesikhumbuzi esizayo kunokuba kube irekhodi elidlule</string>
+    <string name="save">Londoloza</string>
+
+    <string name="maintenance_type_service">Isevisi</string>
+    <string name="maintenance_type_repair">Ukulungisa</string>
+    <string name="maintenance_type_inspection">Ukuhlolwa</string>
+    <string name="maintenance_type_pick_up">Ukuthatha</string>
+    <string name="maintenance_type_other">Okunye</string>
+    <string name="maintenance_due_date">Kufanele kwenziwe %1$s</string>
+    <string name="maintenance_cost_value">R%1$,.2f</string>
+    <string name="maintenance_overdue">Sekudlule isikhathi</string>
+    <string name="running_costs_no_vehicle">Engeza imoto ngaphambi kokurekhoda izindleko zokusebenzisa.</string>
+    <string name="vehicle_label">Imoto</string>
+    <string name="select_vehicle">Khetha imoto</string>
+
+    <string name="total_running_cost">Izindleko zokusebenzisa sezizonke</string>
+    <string name="fuel_spend">Izindleko zikaphethiloli</string>
+    <string name="other_expenses">Ezinye izindleko</string>
+    <string name="fuel_purchased">Uphethiloli othengiwe</string>
+    <string name="average_fuel_price">Intengo emaphakathi kaphethiloli</string>
+    <string name="estimated_consumption">Ukusetshenziswa okulinganisiwe</string>
+    <string name="not_enough_data">Idatha ayanele</string>
+
+    <string name="add_fuel">Engeza uphethiloli</string>
+    <string name="add_expense">Engeza izindleko</string>
+    <string name="fuel_history">Umlando kaphethiloli</string>
+    <string name="expense_history">Umlando wezindleko</string>
+    <string name="no_fuel_entries">Akukho okufakiwe kukaphethiloli okwamanje.</string>
+    <string name="no_expenses">Akukho zindleko ezirekhodiwe okwamanje.</string>
+
+    <string name="litres_value">%1$.2f L</string>
+    <string name="odometer_km_value">%1$d km</string>
+    <string name="price_per_litre_value">%1$s / L</string>
+    <string name="consumption_value">%1$.2f L/100 km</string>
+
+    <string name="full_tank">Ithangi eligcwele</string>
+    <string name="partial_fill">Ukugcwalisa okuyingxenye</string>
+
+    <string name="date_yyyy_mm_dd">Usuku (YYYY-MM-DD)</string>
+    <string name="odometer_km">I-Odometer (km)</string>
+    <string name="litres">Amalitha</string>
+    <string name="price_per_litre">Intengo ilitha ngalinye</string>
+
+    <string name="expense_category">Isigaba isb. Umshwalense, Amathayi</string>
+    <string name="expense_amount">Inani (R)</string>
+    <string name="description">Incazelo</string>
+
+    <string name="cancel">Khansela</string>
+
+    <string name="error_invalid_fuel_entry">Faka i-odometer, amalitha nentengo kaphethiloli evumelekile.</string>
+    <string name="error_invalid_expense">Faka isigaba nenani elivumelekile.</string>
+    <string name="checking_api">I-API iyahlolwa...</string>
+    <string name="api_connected">I-API ixhunyiwe</string>
+    <string name="api_connection_failed">Ukuxhuma ku-API kwehlulekile</string>
+
+    <string name="cloud_not_tested">Isizindalwazi sefu asikahlolwa</string>
+    <string name="cloud_database_connected">Isizindalwazi sefu sixhunyiwe</string>
+    <string name="cloud_record_not_returned">Irekhodi lidaliwe, kodwa awekho amarekhodi abuyisiwe.</string>
+    <string name="cloud_database_test_failed">Ukuhlolwa kwesizindalwazi sefu kwehlulekile</string>
+    <string name="testing_cloud_database">Kuhlolwa isizindalwazi sefu...</string>
+    <string name="test_cloud_database">Hlola isizindalwazi sefu</string>
+
+    <string name="your_vehicle_companion">Umsizi wakho wemoto</string>
+    <string name="sign_in_to_continue">Ngena ukuze uqhubeke</string>
+    <string name="sign_in_with_google">Ngena nge-Google</string>
+
+    <string name="failed_load_vehicles">Kwehlulekile ukulayisha izimoto.</string>
+    <string name="vehicle_saved_message">Imoto ilondoloziwe: %1$s %2$s</string>
+    <string name="failed_save_vehicle">Kwehlulekile ukulondoloza imoto.</string>
+
+    <string name="google_sign_in_unsupported">Ukungena nge-Google kubuyise imininingwane engasekelwe.</string>
+    <string name="google_sign_in_failed">Ukungena nge-Google kwehlulekile. Sicela uzame futhi.</string>
+    <string name="firebase_authentication_failed">Ukuqinisekiswa kwe-Firebase kwehlulekile.</string>
+    <string name="biometric_auth_success">Ukuqinisekiswa kwe-biometric kuphumelele.</string>
+    <string name="biometric_not_recognised">I-biometric ayibonwanga. Zama futhi.</string>
+    <string name="biometric_prompt_title">Ukuqinisekiswa kwe-biometric kwe-DriveMate</string>
+    <string name="biometric_prompt_subtitle">Qinisekisa ubuwena usebenzisa i-biometric</string>
+    <string name="biometric_auth_unavailable">Ukuqinisekiswa kwe-biometric akutholakali.</string>
+    <string name="biometric_authenticate_action">Qinisekisa</string>
+    <string name="welcome">Siyakwamukela</string>
+    <string name="cloud_test_message">Sawubona kusuka ku-DriveMate Android</string>
+    <string name="drivemate_user">Umsebenzisi we-DriveMate</string>
+
+    <string name="notification_channel_name">Izikhumbuzo ze-DriveMate</string>
+    <string name="notification_channel_description">Izikhumbuzo zokuvuselela ilayisense yezimoto zakho</string>
+    <string name="notification_public_title">DriveMate</string>
+    <string name="notification_public_text">Unesikhumbuzo senkambo. Vula ifoni yakho ukusibona.</string>
+    <string name="notification_reminders_on">Izikhumbuzo zivuliwe. Imininingwane ifihliwe esikrinini esikhiyiwe.</string>
+    <string name="notification_reminders_off">Izikhumbuzo zivaliwe</string>
+    <string name="notification_permission_denied">Imvume yezaziso yenqatshiwe. Yivule ezilungisweni zesistimu ukuze uthole izikhumbuzo.</string>
+    <string name="email_label">I-imeyili</string>
+    <string name="password_label">Iphasiwedi</string>
+    <string name="sign_in_with_email">Ngena</string>
+    <string name="create_account">Dala i-akhawunti</string>
+    <string name="login_fields_required">Faka i-imeyili nephasiwedi yakho.</string>
+    <string name="login_password_too_short">Iphasiwedi kumele ibe nezinhlamvu ezingu-6 ubuncane.</string>
+    <string name="login_invalid_credentials">I-imeyili noma iphasiwedi akulungile. Kusele imizamo engu-%1$d.</string>
+    <string name="login_locked_out">Imizamo eyehlulekile eminingi kakhulu. Zama futhi emizuzwini engu-%1$d.</string>
+    <string name="login_network_error">Ayikwazi ukufinyelela isevisi yokungena. Hlola uxhumano lwakho.</string>
+    <string name="account_creation_failed">Ayikwazanga ukudala i-akhawunti. Sicela uzame futhi.</string>
 </resources>

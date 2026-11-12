@@ -1,5 +1,9 @@
 package com.drivemate.sa
 
+import androidx.compose.ui.res.stringResource
+import com.drivemate.sa.locale.LanguageManager
+import androidx.compose.runtime.saveable.rememberSaveable
+import com.drivemate.sa.ui.screens.SettingScreen
 import com.drivemate.sa.ui.screens.RunningCostsScreen
 import com.drivemate.sa.viewmodels.RunningCostsViewModel
 import androidx.compose.runtime.collectAsState
@@ -8,9 +12,11 @@ import com.drivemate.sa.ui.screens.MaintenanceScreen
 import com.drivemate.sa.viewmodels.MaintenanceViewModel
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.ComponentActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -43,12 +49,22 @@ import com.drivemate.sa.ui.vehicles.VehicleProfileScreen
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential.Companion.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import com.drivemate.sa.security.LoginAttemptTracker
+import com.drivemate.sa.security.SharedPrefsAttemptStore
+import kotlin.math.ceil
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.launch
 
-class MainActivity : ComponentActivity() {
-
+class MainActivity : FragmentActivity() {
     companion object {
         private const val TAG_APP = "DriveMateApp"
         private const val TAG_AUTH = "DriveMateAuth"
@@ -60,13 +76,17 @@ class MainActivity : ComponentActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var credentialManager: CredentialManager
 
+    private val loginAttemptTracker by lazy {
+        LoginAttemptTracker(SharedPrefsAttemptStore(this))
+    }
+
     private var isLoading by mutableStateOf(false)
     private var errorMessage by mutableStateOf<String?>(null)
     private var refreshUi by mutableStateOf(0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        LanguageManager.applyStoredLanguage(this)
         Log.i(
             TAG_APP,
             "DriveMate application started"
@@ -78,7 +98,7 @@ class MainActivity : ComponentActivity() {
         if (auth.currentUser != null) {
             Log.i(
                 TAG_AUTH,
-                "Existing Firebase session detected"
+                "Existing Firebase session detected - auto login"
             )
         } else {
             Log.d(
@@ -92,15 +112,33 @@ class MainActivity : ComponentActivity() {
 
                 val ignored = refreshUi
                 val currentUser = auth.currentUser
+                val checkingApiText =
+                    stringResource(R.string.checking_api)
+
+                val cloudNotTestedText =
+                    stringResource(R.string.cloud_not_tested)
+
+                val apiConnectedText =
+                    stringResource(R.string.api_connected)
+
+                val apiFailedText =
+                    stringResource(R.string.api_connection_failed)
+
+                val cloudConnectedText =
+                    stringResource(R.string.cloud_database_connected)
+
+                val cloudNoRecordsText =
+                    stringResource(R.string.cloud_record_not_returned)
+
+                val cloudFailedText =
+                    stringResource(R.string.cloud_database_test_failed)
 
                 var apiStatus by remember {
-                    mutableStateOf("Checking API...")
+                    mutableStateOf(checkingApiText)
                 }
 
                 var cloudStatus by remember {
-                    mutableStateOf(
-                        "Cloud database not tested yet"
-                    )
+                    mutableStateOf(cloudNotTestedText)
                 }
 
                 var cloudLoading by remember {
@@ -115,6 +153,17 @@ class MainActivity : ComponentActivity() {
                 }
                 var showRunningCosts by remember {
                     mutableStateOf(false)
+                }
+                var showSettings by rememberSaveable {
+                    mutableStateOf(false)
+                }
+                var emailInput by rememberSaveable {
+                    mutableStateOf("")
+                }
+                // Deliberately not rememberSaveable: never write the
+                // password into saved instance state.
+                var passwordInput by remember {
+                    mutableStateOf("")
                 }
                 var vehicleSaveStatus by remember {
                     mutableStateOf<String?>(null)
@@ -159,8 +208,7 @@ class MainActivity : ComponentActivity() {
                                     "${response.service} ${response.status}"
                         )
 
-                        "${response.service}: ${response.status}"
-
+                        apiConnectedText
                     } catch (e: Exception) {
 
                         Log.e(
@@ -169,8 +217,7 @@ class MainActivity : ComponentActivity() {
                             e
                         )
 
-                        "API connection failed"
-                    }
+                        apiFailedText}
                 }
 
                 LaunchedEffect(
@@ -220,7 +267,9 @@ class MainActivity : ComponentActivity() {
                             )
 
                             vehiclesError =
-                                "Failed to load vehicles."
+                                getString(
+                                    R.string.failed_load_vehicles
+                                )
 
                         } finally {
                             vehiclesLoading = false
@@ -234,6 +283,36 @@ class MainActivity : ComponentActivity() {
                 }
 
                 when {
+                    currentUser != null &&
+                            showSettings -> {
+
+                        SettingScreen(
+                            currentUser = currentUser,
+
+                            onBackClick = {
+                                showSettings = false
+                            },
+
+                            onViewFullProfile = { },
+
+                            onMyBookingsClick = { },
+
+                            onMyMessagesClick = { },
+
+                            onHelpCenterClick = { },
+
+                            onAppFeedbackClick = { },
+
+                            onLanguageClick = {
+                                Log.d(
+                                    TAG_APP,
+                                    "Language settings opened"
+                                )
+                            },
+
+                            onNotificationClick = { }
+                        )
+                    }
                     currentUser != null &&
                             showRunningCosts -> {
 
@@ -359,9 +438,11 @@ class MainActivity : ComponentActivity() {
                                         )
 
                                         vehicleSaveStatus =
-                                            "Vehicle saved: " +
-                                                    "${vehicle.make} " +
-                                                    vehicle.model
+                                            getString(
+                                                R.string.vehicle_saved_message,
+                                                vehicle.make,
+                                                vehicle.model
+                                            )
 
                                         showAddVehicle = false
                                         vehicleRefreshKey++
@@ -375,7 +456,9 @@ class MainActivity : ComponentActivity() {
                                         )
 
                                         vehicleSaveStatus =
-                                            "Failed to save vehicle."
+                                            getString(
+                                                R.string.failed_save_vehicle
+                                            )
 
                                     } finally {
                                         vehicleSaving = false
@@ -409,7 +492,18 @@ class MainActivity : ComponentActivity() {
                     currentUser != null -> {
 
                         VehicleProfileScreen(
+                            onOpenSettings = {
 
+                                Log.d(
+                                    TAG_APP,
+                                    "Opening Settings screen"
+                                )
+
+                                showAddVehicle = false
+                                showMaintenance = false
+                                showRunningCosts = false
+                                showSettings = true
+                            },
                             vehicles = vehicles,
 
                             isLoading =
@@ -431,6 +525,7 @@ class MainActivity : ComponentActivity() {
                                 showAddVehicle = false
                                 showRunningCosts = false
                                 showMaintenance = true
+                                showSettings = false
                             },
                             onOpenRunningCosts = {
 
@@ -442,6 +537,7 @@ class MainActivity : ComponentActivity() {
                                 showAddVehicle = false
                                 showMaintenance = false
                                 showRunningCosts = true
+                                showSettings = false
                             },
                             onAddVehicle = {
 
@@ -454,6 +550,7 @@ class MainActivity : ComponentActivity() {
                                 showMaintenance = false
                                 showAddVehicle = true
                                 showRunningCosts = false
+                                showSettings = false
                             },
 
 
@@ -481,6 +578,7 @@ class MainActivity : ComponentActivity() {
                                 showAddVehicle = false
                                 showMaintenance = false
                                 showRunningCosts = false
+                                showSettings = false
 
                                 refreshUi++
 
@@ -497,6 +595,9 @@ class MainActivity : ComponentActivity() {
                         Column(
                             modifier = Modifier
                                 .fillMaxSize()
+                                .verticalScroll(
+                                    rememberScrollState()
+                                )
                                 .padding(32.dp),
 
                             verticalArrangement =
@@ -507,7 +608,9 @@ class MainActivity : ComponentActivity() {
                         ) {
 
                             Text(
-                                text = "DriveMate",
+                                text = stringResource(
+                                    R.string.app_name
+                                ),
 
                                 style =
                                     MaterialTheme.typography
@@ -523,8 +626,9 @@ class MainActivity : ComponentActivity() {
                             )
 
                             Text(
-                                text =
-                                    "Your vehicle companion",
+                                text = stringResource(
+                                    R.string.your_vehicle_companion
+                                ),
 
                                 style =
                                     MaterialTheme.typography
@@ -603,8 +707,7 @@ class MainActivity : ComponentActivity() {
                                                     "Cloud database test successful"
                                                 )
 
-                                                "Cloud DB connected: " +
-                                                        latestRecord.message
+                                                cloudConnectedText
 
                                             } else {
 
@@ -613,8 +716,7 @@ class MainActivity : ComponentActivity() {
                                                     "Cloud record created but no records returned"
                                                 )
 
-                                                "Record created, but no records returned."
-                                            }
+                                                cloudNoRecordsText                                            }
 
                                         } catch (
                                             e: Exception
@@ -626,7 +728,7 @@ class MainActivity : ComponentActivity() {
                                                 e
                                             )
 
-                                            "Cloud database test failed"
+                                            cloudFailedText
 
                                         } finally {
                                             cloudLoading = false
@@ -641,9 +743,13 @@ class MainActivity : ComponentActivity() {
                             ) {
                                 Text(
                                     if (cloudLoading) {
-                                        "Testing cloud database..."
+                                        stringResource(
+                                            R.string.testing_cloud_database
+                                        )
                                     } else {
-                                        "Test Cloud Database"
+                                        stringResource(
+                                            R.string.test_cloud_database
+                                        )
                                     }
                                 )
                             }
@@ -665,10 +771,10 @@ class MainActivity : ComponentActivity() {
                                 modifier =
                                     Modifier.height(40.dp)
                             )
-
                             Text(
-                                text =
-                                    "Sign in to continue",
+                                text = stringResource(
+                                    R.string.sign_in_to_continue
+                                ),
 
                                 style =
                                     MaterialTheme.typography
@@ -701,9 +807,113 @@ class MainActivity : ComponentActivity() {
                                     CircularProgressIndicator()
                                 } else {
                                     Text(
-                                        "Sign in with Google"
+                                        stringResource(
+                                            R.string.sign_in_with_google
+                                        )
                                     )
                                 }
+                            }
+
+                            Spacer(
+                                modifier =
+                                    Modifier.height(24.dp)
+                            )
+
+                            OutlinedTextField(
+                                modifier =
+                                    Modifier.fillMaxWidth(),
+                                value = emailInput,
+                                onValueChange = {
+                                    emailInput = it
+                                },
+                                label = {
+                                    Text(
+                                        stringResource(
+                                            R.string.email_label
+                                        )
+                                    )
+                                },
+                                singleLine = true,
+                                keyboardOptions =
+                                    KeyboardOptions(
+                                        keyboardType =
+                                            KeyboardType.Email
+                                    )
+                            )
+
+                            Spacer(
+                                modifier =
+                                    Modifier.height(8.dp)
+                            )
+
+                            OutlinedTextField(
+                                modifier =
+                                    Modifier.fillMaxWidth(),
+                                value = passwordInput,
+                                onValueChange = {
+                                    passwordInput = it
+                                },
+                                label = {
+                                    Text(
+                                        stringResource(
+                                            R.string.password_label
+                                        )
+                                    )
+                                },
+                                singleLine = true,
+                                visualTransformation =
+                                    PasswordVisualTransformation(),
+                                keyboardOptions =
+                                    KeyboardOptions(
+                                        keyboardType =
+                                            KeyboardType.Password
+                                    )
+                            )
+
+                            Spacer(
+                                modifier =
+                                    Modifier.height(12.dp)
+                            )
+
+                            Button(
+                                modifier =
+                                    Modifier.fillMaxWidth(),
+                                enabled = !isLoading,
+                                onClick = {
+                                    signInWithEmail(
+                                        emailInput,
+                                        passwordInput
+                                    )
+                                }
+                            ) {
+                                Text(
+                                    stringResource(
+                                        R.string.sign_in_with_email
+                                    )
+                                )
+                            }
+
+                            Spacer(
+                                modifier =
+                                    Modifier.height(8.dp)
+                            )
+
+                            OutlinedButton(
+                                modifier =
+                                    Modifier.fillMaxWidth(),
+                                enabled = !isLoading,
+                                onClick = {
+                                    createAccountWithEmail(
+                                        emailInput,
+                                        passwordInput
+                                    )
+                                }
+                            ) {
+                                Text(
+                                    stringResource(
+                                        R.string.create_account
+                                    )
+                                )
                             }
 
                             errorMessage?.let {
@@ -728,6 +938,165 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    private fun lockedOutMessage(lockedUntilMillis: Long): String {
+        val remainingMillis =
+            lockedUntilMillis - System.currentTimeMillis()
+
+        val minutes =
+            ceil(remainingMillis / 60_000.0)
+                .toInt()
+                .coerceAtLeast(1)
+
+        return getString(R.string.login_locked_out, minutes)
+    }
+
+    /**
+     * Email/password sign-in with a limit of
+     * [LoginAttemptTracker.MAX_ATTEMPTS] failed attempts before the
+     * account is locked out on this device.
+     */
+    private fun signInWithEmail(
+        email: String,
+        password: String
+    ) {
+        val cleanEmail = email.trim()
+
+        if (cleanEmail.isEmpty() || password.isEmpty()) {
+            errorMessage =
+                getString(R.string.login_fields_required)
+            return
+        }
+
+        val state = loginAttemptTracker.check(cleanEmail)
+
+        if (state is LoginAttemptTracker.State.LockedOut) {
+            Log.w(
+                TAG_AUTH,
+                "Password sign-in blocked: too many failed attempts"
+            )
+            errorMessage =
+                lockedOutMessage(state.lockedUntilMillis)
+            return
+        }
+
+        isLoading = true
+        errorMessage = null
+
+        auth.signInWithEmailAndPassword(cleanEmail, password)
+            .addOnCompleteListener(this) { task ->
+
+                isLoading = false
+
+                if (task.isSuccessful) {
+
+                    Log.i(
+                        TAG_AUTH,
+                        "Email sign-in successful"
+                    )
+
+                    loginAttemptTracker.recordSuccess(cleanEmail)
+                    errorMessage = null
+                    refreshUi++
+
+                } else {
+
+                    val exception = task.exception
+
+                    Log.w(
+                        TAG_AUTH,
+                        "Email sign-in failed",
+                        exception
+                    )
+
+                    errorMessage = when (exception) {
+
+                        is FirebaseAuthInvalidCredentialsException,
+                        is FirebaseAuthInvalidUserException -> {
+                            when (
+                                val result =
+                                    loginAttemptTracker
+                                        .recordFailure(cleanEmail)
+                            ) {
+                                is LoginAttemptTracker.State.LockedOut ->
+                                    lockedOutMessage(
+                                        result.lockedUntilMillis
+                                    )
+
+                                is LoginAttemptTracker.State.Allowed ->
+                                    getString(
+                                        R.string.login_invalid_credentials,
+                                        result.attemptsRemaining
+                                    )
+                            }
+                        }
+
+                        is FirebaseNetworkException ->
+                            getString(R.string.login_network_error)
+
+                        else ->
+                            getString(
+                                R.string.firebase_authentication_failed
+                            )
+                    }
+                }
+            }
+    }
+
+    private fun createAccountWithEmail(
+        email: String,
+        password: String
+    ) {
+        val cleanEmail = email.trim()
+
+        if (cleanEmail.isEmpty() || password.isEmpty()) {
+            errorMessage =
+                getString(R.string.login_fields_required)
+            return
+        }
+
+        if (password.length < 6) {
+            errorMessage =
+                getString(R.string.login_password_too_short)
+            return
+        }
+
+        isLoading = true
+        errorMessage = null
+
+        auth.createUserWithEmailAndPassword(cleanEmail, password)
+            .addOnCompleteListener(this) { task ->
+
+                isLoading = false
+
+                if (task.isSuccessful) {
+
+                    Log.i(
+                        TAG_AUTH,
+                        "Email account created"
+                    )
+
+                    loginAttemptTracker.recordSuccess(cleanEmail)
+                    errorMessage = null
+                    refreshUi++
+
+                } else {
+
+                    Log.e(
+                        TAG_AUTH,
+                        "Email account creation failed",
+                        task.exception
+                    )
+
+                    errorMessage =
+                        if (task.exception is FirebaseNetworkException) {
+                            getString(R.string.login_network_error)
+                        } else {
+                            getString(R.string.account_creation_failed)
+                        }
+                }
+            }
     }
 
     private fun signInWithGoogle() {
@@ -805,7 +1174,9 @@ class MainActivity : ComponentActivity() {
                     isLoading = false
 
                     errorMessage =
-                        "Google sign-in returned an unsupported credential."
+                        getString(
+                            R.string.google_sign_in_unsupported
+                        )
                 }
 
             } catch (e: Exception) {
@@ -819,7 +1190,9 @@ class MainActivity : ComponentActivity() {
                 isLoading = false
 
                 errorMessage =
-                    "Google sign-in failed. Please try again."
+                    getString(
+                        R.string.google_sign_in_failed
+                    )
             }
         }
     }
@@ -865,9 +1238,9 @@ class MainActivity : ComponentActivity() {
                 )
 
                 errorMessage =
-                    task.exception
-                        ?.localizedMessage
-                        ?: "Firebase authentication failed."
+                    getString(
+                        R.string.firebase_authentication_failed
+                    )
             }
         }
     }

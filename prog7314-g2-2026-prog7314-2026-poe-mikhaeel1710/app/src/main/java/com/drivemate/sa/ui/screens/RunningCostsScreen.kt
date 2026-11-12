@@ -1,5 +1,10 @@
 package com.drivemate.sa.ui.screens
 
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,7 +34,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.drivemate.sa.R
 import com.drivemate.sa.network.CreateExpenseRequest
 import com.drivemate.sa.network.CreateFuelEntryRequest
 import com.drivemate.sa.network.Expense
@@ -51,81 +58,134 @@ fun RunningCostsScreen(
     onAddExpense: (CreateExpenseRequest) -> Unit,
     onBack: () -> Unit
 ) {
-    var showFuelDialog by remember { mutableStateOf(false) }
-    var showExpenseDialog by remember { mutableStateOf(false) }
-    var vehicleMenuExpanded by remember { mutableStateOf(false) }
+    var showFuelDialog by remember {
+        mutableStateOf(false)
+    }
+
+    var showExpenseDialog by remember {
+        mutableStateOf(false)
+    }
+
+    var vehicleMenuExpanded by remember {
+        mutableStateOf(false)
+    }
 
     val selectedVehicle =
-        vehicles.firstOrNull { it.id == selectedVehicleId }
-            ?: vehicles.firstOrNull()
+        vehicles.firstOrNull {
+            it.id == selectedVehicleId
+        } ?: vehicles.firstOrNull()
 
-    val selectedFuelEntries = selectedVehicle?.let { vehicle ->
-        fuelEntries.filter { it.vehicleId == vehicle.id }
-    } ?: emptyList()
+    val selectedFuelEntries =
+        selectedVehicle?.let { vehicle ->
+            fuelEntries.filter {
+                it.vehicleId == vehicle.id
+            }
+        } ?: emptyList()
 
-    val selectedExpenses = selectedVehicle?.let { vehicle ->
-        expenses.filter { it.vehicleId == vehicle.id }
-    } ?: emptyList()
+    val selectedExpenses =
+        selectedVehicle?.let { vehicle ->
+            expenses.filter {
+                it.vehicleId == vehicle.id
+            }
+        } ?: emptyList()
 
-    val overview = RunningCostsCalculator.buildOverview(
-        fuelEntries = selectedFuelEntries,
-        expenses = selectedExpenses
-    )
+    val overview =
+        RunningCostsCalculator.buildOverview(
+            fuelEntries = selectedFuelEntries,
+            expenses = selectedExpenses
+        )
 
     val currencyFormatter =
-        NumberFormat.getCurrencyInstance(Locale.forLanguageTag("en-ZA"))
+        NumberFormat.getCurrencyInstance(
+            Locale.forLanguageTag("en-ZA")
+        )
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(
+                rememberScrollState()
+            )
+            .navigationBarsPadding()
             .padding(16.dp)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            modifier =
+                Modifier.fillMaxWidth(),
+            horizontalArrangement =
+                Arrangement.SpaceBetween,
+            verticalAlignment =
+                Alignment.CenterVertically
         ) {
             Text(
-                text = "Running Costs",
-                style = MaterialTheme.typography.headlineMedium
+                text = stringResource(
+                    R.string.running_costs
+                ),
+                style =
+                    MaterialTheme.typography
+                        .headlineMedium
             )
 
-            TextButton(onClick = onBack) {
-                Text("Back")
+            IconButton(
+                onClick = onBack
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = stringResource(
+                        R.string.back
+                    ),
+                    tint = MaterialTheme.colorScheme.onBackground
+                )
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(
+            modifier = Modifier.height(16.dp)
+        )
 
         if (vehicles.isEmpty()) {
             Text(
-                text = "Add a vehicle before recording running costs.",
-                style = MaterialTheme.typography.bodyLarge
+                text = stringResource(
+                    R.string.running_costs_no_vehicle
+                ),
+                style =
+                    MaterialTheme.typography.bodyLarge
             )
+
             return@Column
         }
 
         Text(
-            text = "Vehicle",
-            style = MaterialTheme.typography.labelLarge
+            text = stringResource(
+                R.string.vehicle_label
+            ),
+            style =
+                MaterialTheme.typography.labelLarge
         )
 
-        Spacer(modifier = Modifier.height(6.dp))
+        Spacer(
+            modifier = Modifier.height(6.dp)
+        )
 
         Box {
             OutlinedButton(
-                onClick = { vehicleMenuExpanded = true }
+                onClick = {
+                    vehicleMenuExpanded = true
+                }
             ) {
                 Text(
                     selectedVehicle?.let {
-                        "${it.nickname} - ${it.registrationNumber}"
-                    } ?: "Select vehicle"
+                        "${it.nickname} - " +
+                                it.registrationNumber
+                    } ?: stringResource(
+                        R.string.select_vehicle
+                    )
                 )
             }
 
             DropdownMenu(
-                expanded = vehicleMenuExpanded,
+                expanded =
+                    vehicleMenuExpanded,
                 onDismissRequest = {
                     vehicleMenuExpanded = false
                 }
@@ -134,148 +194,260 @@ fun RunningCostsScreen(
                     DropdownMenuItem(
                         text = {
                             Text(
-                                "${vehicle.nickname} - ${vehicle.registrationNumber}"
+                                "${vehicle.nickname} - " +
+                                        vehicle.registrationNumber
                             )
                         },
                         onClick = {
                             vehicleMenuExpanded = false
-                            onSelectVehicle(vehicle.id)
+                            onSelectVehicle(
+                                vehicle.id
+                            )
                         }
                     )
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(20.dp))
-
-        OverviewCard(
-            title = "Total Running Cost",
-            value = currencyFormatter.format(overview.totalRunningCost)
+        Spacer(
+            modifier = Modifier.height(20.dp)
         )
 
-        Spacer(modifier = Modifier.height(10.dp))
-
         OverviewCard(
-            title = "Fuel Spend",
-            value = currencyFormatter.format(overview.totalFuelExpenditure)
+            title = stringResource(
+                R.string.total_running_cost
+            ),
+            value =
+                currencyFormatter.format(
+                    overview.totalRunningCost
+                )
         )
 
-        Spacer(modifier = Modifier.height(10.dp))
-
-        OverviewCard(
-            title = "Other Expenses",
-            value = currencyFormatter.format(overview.totalExpenseAmount)
+        Spacer(
+            modifier = Modifier.height(10.dp)
         )
 
-        Spacer(modifier = Modifier.height(10.dp))
+        OverviewCard(
+            title = stringResource(
+                R.string.fuel_spend
+            ),
+            value =
+                currencyFormatter.format(
+                    overview.totalFuelExpenditure
+                )
+        )
+
+        Spacer(
+            modifier = Modifier.height(10.dp)
+        )
 
         OverviewCard(
-            title = "Fuel Purchased",
-            value = String.format(
-                Locale.US,
-                "%.2f L",
+            title = stringResource(
+                R.string.other_expenses
+            ),
+            value =
+                currencyFormatter.format(
+                    overview.totalExpenseAmount
+                )
+        )
+
+        Spacer(
+            modifier = Modifier.height(10.dp)
+        )
+
+        OverviewCard(
+            title = stringResource(
+                R.string.fuel_purchased
+            ),
+            value = stringResource(
+                R.string.litres_value,
                 overview.totalLitresPurchased
             )
         )
 
-        Spacer(modifier = Modifier.height(10.dp))
-
-        OverviewCard(
-            title = "Average Fuel Price",
-            value = overview.averagePricePerLitre?.let {
-                "${currencyFormatter.format(it)} / L"
-            } ?: "Not enough data"
+        Spacer(
+            modifier = Modifier.height(10.dp)
         )
 
-        Spacer(modifier = Modifier.height(10.dp))
-
         OverviewCard(
-            title = "Estimated Consumption",
-            value = overview.estimatedConsumptionLPer100Km?.let {
-                String.format(
-                    Locale.US,
-                    "%.2f L/100 km",
-                    it
-                )
-            } ?: "Not enough data"
+            title = stringResource(
+                R.string.average_fuel_price
+            ),
+            value =
+                overview.averagePricePerLitre
+                    ?.let {
+                        stringResource(
+                            R.string.price_per_litre_value,
+                            currencyFormatter.format(it)
+                        )
+                    }
+                    ?: stringResource(
+                        R.string.not_enough_data
+                    )
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(
+            modifier = Modifier.height(10.dp)
+        )
+
+        OverviewCard(
+            title = stringResource(
+                R.string.estimated_consumption
+            ),
+            value =
+                overview
+                    .estimatedConsumptionLPer100Km
+                    ?.let {
+                        stringResource(
+                            R.string.consumption_value,
+                            it
+                        )
+                    }
+                    ?: stringResource(
+                        R.string.not_enough_data
+                    )
+        )
+
+        Spacer(
+            modifier = Modifier.height(24.dp)
+        )
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+            modifier =
+                Modifier.fillMaxWidth(),
+            horizontalArrangement =
+                Arrangement.spacedBy(12.dp)
         ) {
             Button(
-                onClick = { showFuelDialog = true },
-                modifier = Modifier.weight(1f)
+                onClick = {
+                    showFuelDialog = true
+                },
+                modifier =
+                    Modifier.weight(1f)
             ) {
-                Text("Add Fuel")
+                Text(
+                    stringResource(
+                        R.string.add_fuel
+                    )
+                )
             }
 
             Button(
-                onClick = { showExpenseDialog = true },
-                modifier = Modifier.weight(1f)
+                onClick = {
+                    showExpenseDialog = true
+                },
+                modifier =
+                    Modifier.weight(1f)
             ) {
-                Text("Add Expense")
+                Text(
+                    stringResource(
+                        R.string.add_expense
+                    )
+                )
             }
         }
 
-        Spacer(modifier = Modifier.height(28.dp))
-
-        Text(
-            text = "Fuel History",
-            style = MaterialTheme.typography.titleLarge
+        Spacer(
+            modifier = Modifier.height(28.dp)
         )
 
-        Spacer(modifier = Modifier.height(10.dp))
+        Text(
+            text = stringResource(
+                R.string.fuel_history
+            ),
+            style =
+                MaterialTheme.typography.titleLarge
+        )
 
-        if (selectedFuelEntries.isEmpty()) {
-            Text("No fuel entries recorded yet.")
+        Spacer(
+            modifier = Modifier.height(10.dp)
+        )
+
+        if (
+            selectedFuelEntries.isEmpty()
+        ) {
+            Text(
+                stringResource(
+                    R.string.no_fuel_entries
+                )
+            )
         } else {
             selectedFuelEntries
-                .sortedByDescending { it.date }
+                .sortedByDescending {
+                    it.date
+                }
                 .forEach { entry ->
+
                     FuelEntryCard(
                         entry = entry,
-                        currencyFormatter = currencyFormatter
+                        currencyFormatter =
+                            currencyFormatter
                     )
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(
+                        modifier =
+                            Modifier.height(8.dp)
+                    )
                 }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Text(
-            text = "Expense History",
-            style = MaterialTheme.typography.titleLarge
+        Spacer(
+            modifier = Modifier.height(24.dp)
         )
 
-        Spacer(modifier = Modifier.height(10.dp))
+        Text(
+            text = stringResource(
+                R.string.expense_history
+            ),
+            style =
+                MaterialTheme.typography.titleLarge
+        )
 
-        if (selectedExpenses.isEmpty()) {
-            Text("No expenses recorded yet.")
+        Spacer(
+            modifier = Modifier.height(10.dp)
+        )
+
+        if (
+            selectedExpenses.isEmpty()
+        ) {
+            Text(
+                stringResource(
+                    R.string.no_expenses
+                )
+            )
         } else {
             selectedExpenses
-                .sortedByDescending { it.date }
+                .sortedByDescending {
+                    it.date
+                }
                 .forEach { expense ->
+
                     ExpenseCard(
                         expense = expense,
-                        currencyFormatter = currencyFormatter
+                        currencyFormatter =
+                            currencyFormatter
                     )
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(
+                        modifier =
+                            Modifier.height(8.dp)
+                    )
                 }
         }
     }
 
-    if (showFuelDialog && selectedVehicle != null) {
+    if (
+        showFuelDialog &&
+        selectedVehicle != null
+    ) {
         AddFuelDialog(
-            vehicleId = selectedVehicle.id,
+            vehicleId =
+                selectedVehicle.id,
+
             onDismiss = {
                 showFuelDialog = false
             },
+
             onSave = { request ->
                 onAddFuelEntry(request)
                 showFuelDialog = false
@@ -283,12 +455,18 @@ fun RunningCostsScreen(
         )
     }
 
-    if (showExpenseDialog && selectedVehicle != null) {
+    if (
+        showExpenseDialog &&
+        selectedVehicle != null
+    ) {
         AddExpenseDialog(
-            vehicleId = selectedVehicle.id,
+            vehicleId =
+                selectedVehicle.id,
+
             onDismiss = {
                 showExpenseDialog = false
             },
+
             onSave = { request ->
                 onAddExpense(request)
                 showExpenseDialog = false
@@ -303,21 +481,29 @@ private fun OverviewCard(
     value: String
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth()
+        modifier =
+            Modifier.fillMaxWidth()
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier =
+                Modifier.padding(16.dp)
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.labelLarge
+                style =
+                    MaterialTheme.typography
+                        .labelLarge
             )
 
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(
+                modifier = Modifier.height(4.dp)
+            )
 
             Text(
                 text = value,
-                style = MaterialTheme.typography.titleLarge
+                style =
+                    MaterialTheme.typography
+                        .titleLarge
             )
         }
     }
@@ -329,37 +515,59 @@ private fun FuelEntryCard(
     currencyFormatter: NumberFormat
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth()
+        modifier =
+            Modifier.fillMaxWidth()
     ) {
         Column(
-            modifier = Modifier.padding(14.dp)
+            modifier =
+                Modifier.padding(14.dp)
         ) {
             Text(
-                text = entry.date.take(10),
-                style = MaterialTheme.typography.titleMedium
-            )
-
-            Text("${entry.litres} L")
-
-            Text(
-                "${entry.odometerKm} km"
+                text =
+                    entry.date.take(10),
+                style =
+                    MaterialTheme.typography
+                        .titleMedium
             )
 
             Text(
-                currencyFormatter.format(entry.totalCost)
+                stringResource(
+                    R.string.litres_value,
+                    entry.litres
+                )
+            )
+
+            Text(
+                stringResource(
+                    R.string.odometer_km_value,
+                    entry.odometerKm
+                )
+            )
+
+            Text(
+                currencyFormatter.format(
+                    entry.totalCost
+                )
             )
 
             entry.pricePerLitre?.let {
                 Text(
-                    "${currencyFormatter.format(it)} / L"
+                    stringResource(
+                        R.string.price_per_litre_value,
+                        currencyFormatter.format(it)
+                    )
                 )
             }
 
             Text(
                 if (entry.isFullTank) {
-                    "Full tank"
+                    stringResource(
+                        R.string.full_tank
+                    )
                 } else {
-                    "Partial fill"
+                    stringResource(
+                        R.string.partial_fill
+                    )
                 }
             )
         }
@@ -372,24 +580,38 @@ private fun ExpenseCard(
     currencyFormatter: NumberFormat
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth()
+        modifier =
+            Modifier.fillMaxWidth()
     ) {
         Column(
-            modifier = Modifier.padding(14.dp)
+            modifier =
+                Modifier.padding(14.dp)
         ) {
             Text(
-                text = expense.category,
-                style = MaterialTheme.typography.titleMedium
+                text =
+                    expense.category,
+                style =
+                    MaterialTheme.typography
+                        .titleMedium
             )
-
-            Text(expense.date.take(10))
 
             Text(
-                currencyFormatter.format(expense.amount)
+                expense.date.take(10)
             )
 
-            if (!expense.description.isNullOrBlank()) {
-                Text(expense.description)
+            Text(
+                currencyFormatter.format(
+                    expense.amount
+                )
+            )
+
+            if (
+                !expense.description
+                    .isNullOrBlank()
+            ) {
+                Text(
+                    expense.description
+                )
             }
         }
     }
@@ -402,7 +624,9 @@ private fun AddFuelDialog(
     onSave: (CreateFuelEntryRequest) -> Unit
 ) {
     var date by remember {
-        mutableStateOf(LocalDate.now().toString())
+        mutableStateOf(
+            LocalDate.now().toString()
+        )
     }
 
     var odometer by remember {
@@ -425,51 +649,111 @@ private fun AddFuelDialog(
         mutableStateOf<String?>(null)
     }
 
+    val invalidFuelMessage =
+        stringResource(
+            R.string.error_invalid_fuel_entry
+        )
+
     AlertDialog(
         onDismissRequest = onDismiss,
+
         title = {
-            Text("Add Fuel")
+            Text(
+                stringResource(
+                    R.string.add_fuel
+                )
+            )
         },
+
         text = {
             Column {
                 OutlinedTextField(
                     value = date,
-                    onValueChange = { date = it },
-                    label = { Text("Date (YYYY-MM-DD)") },
-                    modifier = Modifier.fillMaxWidth()
+                    onValueChange = {
+                        date = it
+                    },
+                    label = {
+                        Text(
+                            stringResource(
+                                R.string.date_yyyy_mm_dd
+                            )
+                        )
+                    },
+                    modifier =
+                        Modifier.fillMaxWidth()
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(
+                    modifier =
+                        Modifier.height(8.dp)
+                )
 
                 OutlinedTextField(
                     value = odometer,
-                    onValueChange = { odometer = it },
-                    label = { Text("Odometer (km)") },
-                    modifier = Modifier.fillMaxWidth()
+                    onValueChange = {
+                        odometer = it
+                    },
+                    label = {
+                        Text(
+                            stringResource(
+                                R.string.odometer_km
+                            )
+                        )
+                    },
+                    modifier =
+                        Modifier.fillMaxWidth()
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(
+                    modifier =
+                        Modifier.height(8.dp)
+                )
 
                 OutlinedTextField(
                     value = litres,
-                    onValueChange = { litres = it },
-                    label = { Text("Litres") },
-                    modifier = Modifier.fillMaxWidth()
+                    onValueChange = {
+                        litres = it
+                    },
+                    label = {
+                        Text(
+                            stringResource(
+                                R.string.litres
+                            )
+                        )
+                    },
+                    modifier =
+                        Modifier.fillMaxWidth()
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(
+                    modifier =
+                        Modifier.height(8.dp)
+                )
 
                 OutlinedTextField(
                     value = pricePerLitre,
-                    onValueChange = { pricePerLitre = it },
-                    label = { Text("Price per litre") },
-                    modifier = Modifier.fillMaxWidth()
+                    onValueChange = {
+                        pricePerLitre = it
+                    },
+                    label = {
+                        Text(
+                            stringResource(
+                                R.string.price_per_litre
+                            )
+                        )
+                    },
+                    modifier =
+                        Modifier.fillMaxWidth()
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(
+                    modifier =
+                        Modifier.height(8.dp)
+                )
 
                 Row(
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment =
+                        Alignment.CenterVertically
                 ) {
                     Checkbox(
                         checked = isFullTank,
@@ -478,25 +762,41 @@ private fun AddFuelDialog(
                         }
                     )
 
-                    Text("Full tank")
+                    Text(
+                        stringResource(
+                            R.string.full_tank
+                        )
+                    )
                 }
 
                 errorMessage?.let {
-                    Spacer(modifier = Modifier.height(6.dp))
+                    Spacer(
+                        modifier =
+                            Modifier.height(6.dp)
+                    )
 
                     Text(
                         text = it,
-                        color = MaterialTheme.colorScheme.error
+                        color =
+                            MaterialTheme.colorScheme
+                                .error
                     )
                 }
             }
         },
+
         confirmButton = {
             TextButton(
                 onClick = {
-                    val odometerValue = odometer.toIntOrNull()
-                    val litresValue = litres.toDoubleOrNull()
-                    val priceValue = pricePerLitre.toDoubleOrNull()
+                    val odometerValue =
+                        odometer.toIntOrNull()
+
+                    val litresValue =
+                        litres.toDoubleOrNull()
+
+                    val priceValue =
+                        pricePerLitre
+                            .toDoubleOrNull()
 
                     if (
                         odometerValue == null ||
@@ -507,30 +807,53 @@ private fun AddFuelDialog(
                         priceValue < 0
                     ) {
                         errorMessage =
-                            "Enter valid odometer, litres and fuel price."
+                            invalidFuelMessage
                     } else {
                         onSave(
                             CreateFuelEntryRequest(
-                                vehicleId = vehicleId,
-                                date = date,
-                                odometerKm = odometerValue,
-                                litres = litresValue,
-                                pricePerLitre = priceValue,
-                                totalCost = litresValue * priceValue,
-                                isFullTank = isFullTank
+                                vehicleId =
+                                    vehicleId,
+
+                                date =
+                                    date,
+
+                                odometerKm =
+                                    odometerValue,
+
+                                litres =
+                                    litresValue,
+
+                                pricePerLitre =
+                                    priceValue,
+
+                                totalCost =
+                                    litresValue *
+                                            priceValue,
+
+                                isFullTank =
+                                    isFullTank
                             )
                         )
                     }
                 }
             ) {
-                Text("Save")
+                Text(
+                    stringResource(
+                        R.string.save
+                    )
+                )
             }
         },
+
         dismissButton = {
             TextButton(
                 onClick = onDismiss
             ) {
-                Text("Cancel")
+                Text(
+                    stringResource(
+                        R.string.cancel
+                    )
+                )
             }
         }
     )
@@ -551,7 +874,9 @@ private fun AddExpenseDialog(
     }
 
     var date by remember {
-        mutableStateOf(LocalDate.now().toString())
+        mutableStateOf(
+            LocalDate.now().toString()
+        )
     }
 
     var description by remember {
@@ -562,63 +887,124 @@ private fun AddExpenseDialog(
         mutableStateOf<String?>(null)
     }
 
+    val invalidExpenseMessage =
+        stringResource(
+            R.string.error_invalid_expense
+        )
+
     AlertDialog(
         onDismissRequest = onDismiss,
+
         title = {
-            Text("Add Expense")
+            Text(
+                stringResource(
+                    R.string.add_expense
+                )
+            )
         },
+
         text = {
             Column {
                 OutlinedTextField(
                     value = category,
-                    onValueChange = { category = it },
-                    label = {
-                        Text("Category e.g. Insurance, Tyres")
+                    onValueChange = {
+                        category = it
                     },
-                    modifier = Modifier.fillMaxWidth()
+                    label = {
+                        Text(
+                            stringResource(
+                                R.string.expense_category
+                            )
+                        )
+                    },
+                    modifier =
+                        Modifier.fillMaxWidth()
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(
+                    modifier =
+                        Modifier.height(8.dp)
+                )
 
                 OutlinedTextField(
                     value = amount,
-                    onValueChange = { amount = it },
-                    label = { Text("Amount (R)") },
-                    modifier = Modifier.fillMaxWidth()
+                    onValueChange = {
+                        amount = it
+                    },
+                    label = {
+                        Text(
+                            stringResource(
+                                R.string.expense_amount
+                            )
+                        )
+                    },
+                    modifier =
+                        Modifier.fillMaxWidth()
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(
+                    modifier =
+                        Modifier.height(8.dp)
+                )
 
                 OutlinedTextField(
                     value = date,
-                    onValueChange = { date = it },
-                    label = { Text("Date (YYYY-MM-DD)") },
-                    modifier = Modifier.fillMaxWidth()
+                    onValueChange = {
+                        date = it
+                    },
+                    label = {
+                        Text(
+                            stringResource(
+                                R.string.date_yyyy_mm_dd
+                            )
+                        )
+                    },
+                    modifier =
+                        Modifier.fillMaxWidth()
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(
+                    modifier =
+                        Modifier.height(8.dp)
+                )
 
                 OutlinedTextField(
                     value = description,
-                    onValueChange = { description = it },
-                    label = { Text("Description") },
-                    modifier = Modifier.fillMaxWidth()
+                    onValueChange = {
+                        description = it
+                    },
+                    label = {
+                        Text(
+                            stringResource(
+                                R.string.description
+                            )
+                        )
+                    },
+                    modifier =
+                        Modifier.fillMaxWidth()
                 )
 
                 errorMessage?.let {
-                    Spacer(modifier = Modifier.height(6.dp))
+                    Spacer(
+                        modifier =
+                            Modifier.height(6.dp)
+                    )
 
                     Text(
                         text = it,
-                        color = MaterialTheme.colorScheme.error
+                        color =
+                            MaterialTheme.colorScheme
+                                .error
                     )
                 }
             }
         },
+
         confirmButton = {
             TextButton(
                 onClick = {
-                    val amountValue = amount.toDoubleOrNull()
+                    val amountValue =
+                        amount.toDoubleOrNull()
 
                     if (
                         category.isBlank() ||
@@ -626,30 +1012,52 @@ private fun AddExpenseDialog(
                         amountValue < 0
                     ) {
                         errorMessage =
-                            "Enter a category and valid amount."
+                            invalidExpenseMessage
                     } else {
                         onSave(
                             CreateExpenseRequest(
-                                vehicleId = vehicleId,
-                                category = category.trim().uppercase(),
-                                amount = amountValue,
-                                date = date,
+                                vehicleId =
+                                    vehicleId,
+
+                                category =
+                                    category
+                                        .trim()
+                                        .uppercase(),
+
+                                amount =
+                                    amountValue,
+
+                                date =
+                                    date,
+
                                 description =
-                                    description.trim()
-                                        .ifBlank { null }
+                                    description
+                                        .trim()
+                                        .ifBlank {
+                                            null
+                                        }
                             )
                         )
                     }
                 }
             ) {
-                Text("Save")
+                Text(
+                    stringResource(
+                        R.string.save
+                    )
+                )
             }
         },
+
         dismissButton = {
             TextButton(
                 onClick = onDismiss
             ) {
-                Text("Cancel")
+                Text(
+                    stringResource(
+                        R.string.cancel
+                    )
+                )
             }
         }
     )

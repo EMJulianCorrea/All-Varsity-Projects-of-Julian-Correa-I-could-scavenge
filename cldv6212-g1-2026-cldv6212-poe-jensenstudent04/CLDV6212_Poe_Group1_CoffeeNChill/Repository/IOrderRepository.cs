@@ -12,4 +12,6 @@ public interface IOrderRepository
     Task<OrderEntity> CreateAsync(OrderEntity entity, CancellationToken cancellationToken = default);
     Task<OrderEntity> GetAsync(string orderDate, string orderId, CancellationToken cancellationToken = default);
     Task UpdateStatusAsync(string orderDate, string orderId, string status, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<OrderEntity>> GetActiveOrdersAsync(CancellationToken cancellationToken = default);
+    Task<OrderEntity?> FindByOrderIdAsync(string orderId, CancellationToken cancellationToken = default);
 }

@@ -39,6 +39,14 @@ public static class HttpResponseHelper
         return response;
     }
 
+    // Part 2: duplicate document name -> 409 Conflict.
+    public static async Task<HttpResponseData> ConflictAsync(HttpRequestData request, string message)
+    {
+        var response = request.CreateResponse(HttpStatusCode.Conflict);
+        await response.WriteAsJsonAsync(new { success = false, message });
+        return response;
+    }
+
     public static async Task<HttpResponseData> ServerErrorAsync(HttpRequestData request, string message)
     {
         var response = request.CreateResponse(HttpStatusCode.InternalServerError);

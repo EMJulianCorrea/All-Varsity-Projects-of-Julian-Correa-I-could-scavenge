@@ -1,0 +1,14 @@
+C:\Users\lab_services_student\source\repos\ICETask3StudentSpecialties\ICETask3StudentSpecialties\obj\Debug\net9.0\ICETask3StudentSpecialties.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\lab_services_student\source\repos\ICETask3StudentSpecialties\ICETask3StudentSpecialties\obj\Debug\net9.0\ICETask3StudentSpecialties.AssemblyInfoInputs.cache
+C:\Users\lab_services_student\source\repos\ICETask3StudentSpecialties\ICETask3StudentSpecialties\obj\Debug\net9.0\ICETask3StudentSpecialties.AssemblyInfo.cs
+C:\Users\lab_services_student\source\repos\ICETask3StudentSpecialties\ICETask3StudentSpecialties\obj\Debug\net9.0\ICETask3StudentSpecialties.csproj.CoreCompileInputs.cache
+C:\Users\lab_services_student\source\repos\ICETask3StudentSpecialties\ICETask3StudentSpecialties\bin\Debug\net9.0\ICETask3StudentSpecialties.exe
+C:\Users\lab_services_student\source\repos\ICETask3StudentSpecialties\ICETask3StudentSpecialties\bin\Debug\net9.0\ICETask3StudentSpecialties.deps.json
+C:\Users\lab_services_student\source\repos\ICETask3StudentSpecialties\ICETask3StudentSpecialties\bin\Debug\net9.0\ICETask3StudentSpecialties.runtimeconfig.json
+C:\Users\lab_services_student\source\repos\ICETask3StudentSpecialties\ICETask3StudentSpecialties\bin\Debug\net9.0\ICETask3StudentSpecialties.dll
+C:\Users\lab_services_student\source\repos\ICETask3StudentSpecialties\ICETask3StudentSpecialties\bin\Debug\net9.0\ICETask3StudentSpecialties.pdb
+C:\Users\lab_services_student\source\repos\ICETask3StudentSpecialties\ICETask3StudentSpecialties\obj\Debug\net9.0\ICETask3StudentSpecialties.dll
+C:\Users\lab_services_student\source\repos\ICETask3StudentSpecialties\ICETask3StudentSpecialties\obj\Debug\net9.0\refint\ICETask3StudentSpecialties.dll
+C:\Users\lab_services_student\source\repos\ICETask3StudentSpecialties\ICETask3StudentSpecialties\obj\Debug\net9.0\ICETask3StudentSpecialties.pdb
+C:\Users\lab_services_student\source\repos\ICETask3StudentSpecialties\ICETask3StudentSpecialties\obj\Debug\net9.0\ICETask3StudentSpecialties.genruntimeconfig.cache
+C:\Users\lab_services_student\source\repos\ICETask3StudentSpecialties\ICETask3StudentSpecialties\obj\Debug\net9.0\ref\ICETask3StudentSpecialties.dll

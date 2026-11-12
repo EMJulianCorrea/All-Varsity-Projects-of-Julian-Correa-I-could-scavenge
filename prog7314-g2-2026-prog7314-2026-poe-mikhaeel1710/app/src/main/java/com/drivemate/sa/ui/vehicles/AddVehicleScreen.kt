@@ -1,5 +1,7 @@
 package com.drivemate.sa.ui.vehicles
 
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,8 +23,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.drivemate.sa.R
 import com.drivemate.sa.network.CreateVehicleRequest
 
 @Composable
@@ -46,30 +50,73 @@ fun AddVehicleScreen(
         mutableStateOf<String?>(null)
     }
 
+    // Resolve validation messages while we are still in a composable scope.
+    val makeRequired =
+        stringResource(R.string.error_vehicle_make_required)
+
+    val modelRequired =
+        stringResource(R.string.error_vehicle_model_required)
+
+    val yearInvalid =
+        stringResource(R.string.error_vehicle_year_invalid)
+
+    val registrationRequired =
+        stringResource(R.string.error_registration_required)
+
+    val fuelRequired =
+        stringResource(R.string.error_fuel_type_required)
+
+    val odometerInvalid =
+        stringResource(R.string.error_odometer_invalid)
+
+    val renewalRequired =
+        stringResource(R.string.error_renewal_date_required)
+
+    val renewalFormatInvalid =
+        stringResource(R.string.error_renewal_date_format)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
+            .imePadding()
+            .navigationBarsPadding()
             .padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(
-            text = "Add Vehicle",
+            text = stringResource(R.string.add_vehicle),
             style = MaterialTheme.typography.headlineMedium
         )
 
         Text(
-            text = "South African vehicle profile",
+            text = stringResource(
+                R.string.vehicle_profile_subtitle
+            ),
             style = MaterialTheme.typography.bodyMedium
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(
+            modifier = Modifier.height(8.dp)
+        )
 
         OutlinedTextField(
             value = nickname,
             onValueChange = { nickname = it },
-            label = { Text("Vehicle nickname") },
-            placeholder = { Text("e.g. Daily Car") },
+            label = {
+                Text(
+                    stringResource(
+                        R.string.vehicle_nickname
+                    )
+                )
+            },
+            placeholder = {
+                Text(
+                    stringResource(
+                        R.string.example_daily_car
+                    )
+                )
+            },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
         )
@@ -77,8 +124,20 @@ fun AddVehicleScreen(
         OutlinedTextField(
             value = make,
             onValueChange = { make = it },
-            label = { Text("Make") },
-            placeholder = { Text("e.g. Toyota") },
+            label = {
+                Text(
+                    stringResource(
+                        R.string.vehicle_make
+                    )
+                )
+            },
+            placeholder = {
+                Text(
+                    stringResource(
+                        R.string.example_toyota
+                    )
+                )
+            },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
         )
@@ -86,8 +145,20 @@ fun AddVehicleScreen(
         OutlinedTextField(
             value = model,
             onValueChange = { model = it },
-            label = { Text("Model") },
-            placeholder = { Text("e.g. Corolla") },
+            label = {
+                Text(
+                    stringResource(
+                        R.string.vehicle_model
+                    )
+                )
+            },
+            placeholder = {
+                Text(
+                    stringResource(
+                        R.string.example_corolla
+                    )
+                )
+            },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
         )
@@ -99,8 +170,20 @@ fun AddVehicleScreen(
                     character.isDigit()
                 }
             },
-            label = { Text("Year") },
-            placeholder = { Text("e.g. 2022") },
+            label = {
+                Text(
+                    stringResource(
+                        R.string.vehicle_year
+                    )
+                )
+            },
+            placeholder = {
+                Text(
+                    stringResource(
+                        R.string.example_vehicle_year
+                    )
+                )
+            },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number
             ),
@@ -111,20 +194,45 @@ fun AddVehicleScreen(
         OutlinedTextField(
             value = registrationNumber,
             onValueChange = {
-                registrationNumber = it.uppercase()
+                registrationNumber =
+                    it.uppercase()
             },
-            label = { Text("Registration number") },
-            placeholder = { Text("e.g. ND 123-456") },
+            label = {
+                Text(
+                    stringResource(
+                        R.string.registration_number
+                    )
+                )
+            },
+            placeholder = {
+                Text(
+                    stringResource(
+                        R.string.example_registration
+                    )
+                )
+            },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
         )
 
         OutlinedTextField(
             value = fuelType,
-            onValueChange = { fuelType = it },
-            label = { Text("Fuel type") },
+            onValueChange = {
+                fuelType = it
+            },
+            label = {
+                Text(
+                    stringResource(
+                        R.string.fuel_type
+                    )
+                )
+            },
             placeholder = {
-                Text("Petrol / Diesel / Hybrid / Electric")
+                Text(
+                    stringResource(
+                        R.string.fuel_type_options
+                    )
+                )
             },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
@@ -133,24 +241,53 @@ fun AddVehicleScreen(
         OutlinedTextField(
             value = odometerKm,
             onValueChange = {
-                odometerKm = it.filter { character ->
-                    character.isDigit()
-                }
+                odometerKm =
+                    it.filter { character ->
+                        character.isDigit()
+                    }
             },
-            label = { Text("Current odometer (km)") },
-            placeholder = { Text("e.g. 45000") },
+            label = {
+                Text(
+                    stringResource(
+                        R.string.current_odometer
+                    )
+                )
+            },
+            placeholder = {
+                Text(
+                    stringResource(
+                        R.string.example_odometer
+                    )
+                )
+            },
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number
+                keyboardType =
+                    KeyboardType.Number
             ),
-            modifier = Modifier.fillMaxWidth(),
+            modifier =
+                Modifier.fillMaxWidth(),
             singleLine = true
         )
 
         OutlinedTextField(
             value = licenceRenewalDate,
-            onValueChange = { licenceRenewalDate = it },
-            label = { Text("Licence renewal date") },
-            placeholder = { Text("YYYY-MM-DD") },
+            onValueChange = {
+                licenceRenewalDate = it
+            },
+            label = {
+                Text(
+                    stringResource(
+                        R.string.licence_renewal_date
+                    )
+                )
+            },
+            placeholder = {
+                Text(
+                    stringResource(
+                        R.string.date_format
+                    )
+                )
+            },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
         )
@@ -158,67 +295,76 @@ fun AddVehicleScreen(
         errorMessage?.let { message ->
             Text(
                 text = message,
-                color = MaterialTheme.colorScheme.error
+                color =
+                    MaterialTheme.colorScheme.error
             )
         }
 
         saveStatus?.let { message ->
             Text(
                 text = message,
-                color = MaterialTheme.colorScheme.error
+                color =
+                    MaterialTheme.colorScheme.error
             )
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(
+            modifier = Modifier.height(8.dp)
+        )
 
         Button(
             modifier = Modifier.fillMaxWidth(),
             enabled = !isSaving,
             onClick = {
-                val yearValue = year.toIntOrNull()
-                val odometerValue = odometerKm.toIntOrNull()
+                val yearValue =
+                    year.toIntOrNull()
+
+                val odometerValue =
+                    odometerKm.toIntOrNull()
 
                 when {
                     make.isBlank() -> {
                         errorMessage =
-                            "Please enter the vehicle make."
+                            makeRequired
                     }
 
                     model.isBlank() -> {
                         errorMessage =
-                            "Please enter the vehicle model."
+                            modelRequired
                     }
 
                     yearValue == null -> {
                         errorMessage =
-                            "Please enter a valid vehicle year."
+                            yearInvalid
                     }
 
                     registrationNumber.isBlank() -> {
                         errorMessage =
-                            "Please enter the registration number."
+                            registrationRequired
                     }
 
                     fuelType.isBlank() -> {
                         errorMessage =
-                            "Please enter the fuel type."
+                            fuelRequired
                     }
 
                     odometerValue == null -> {
                         errorMessage =
-                            "Please enter a valid odometer reading."
+                            odometerInvalid
                     }
 
                     licenceRenewalDate.isBlank() -> {
                         errorMessage =
-                            "Please enter the licence renewal date."
+                            renewalRequired
                     }
 
                     !licenceRenewalDate.matches(
-                        Regex("""\d{4}-\d{2}-\d{2}""")
+                        Regex(
+                            """\d{4}-\d{2}-\d{2}"""
+                        )
                     ) -> {
                         errorMessage =
-                            "Use YYYY-MM-DD for the licence renewal date."
+                            renewalFormatInvalid
                     }
 
                     else -> {
@@ -226,15 +372,31 @@ fun AddVehicleScreen(
 
                         onSaveVehicle(
                             CreateVehicleRequest(
-                                firebaseUserId = firebaseUserId,
-                                nickname = nickname.trim(),
-                                make = make.trim(),
-                                model = model.trim(),
-                                year = yearValue,
+                                firebaseUserId =
+                                    firebaseUserId,
+
+                                nickname =
+                                    nickname.trim(),
+
+                                make =
+                                    make.trim(),
+
+                                model =
+                                    model.trim(),
+
+                                year =
+                                    yearValue,
+
                                 registrationNumber =
-                                    registrationNumber.trim(),
-                                fuelType = fuelType.trim(),
-                                odometerKm = odometerValue,
+                                    registrationNumber
+                                        .trim(),
+
+                                fuelType =
+                                    fuelType.trim(),
+
+                                odometerKm =
+                                    odometerValue,
+
                                 licenceRenewalDate =
                                     "${licenceRenewalDate}T00:00:00Z"
                             )
@@ -245,9 +407,13 @@ fun AddVehicleScreen(
         ) {
             Text(
                 if (isSaving) {
-                    "Saving Vehicle..."
+                    stringResource(
+                        R.string.saving_vehicle
+                    )
                 } else {
-                    "Save Vehicle"
+                    stringResource(
+                        R.string.save_vehicle
+                    )
                 }
             )
         }
@@ -257,9 +423,13 @@ fun AddVehicleScreen(
             enabled = !isSaving,
             onClick = onBack
         ) {
-            Text("Back")
+            Text(
+                stringResource(R.string.back)
+            )
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(
+            modifier = Modifier.height(24.dp)
+        )
     }
 }

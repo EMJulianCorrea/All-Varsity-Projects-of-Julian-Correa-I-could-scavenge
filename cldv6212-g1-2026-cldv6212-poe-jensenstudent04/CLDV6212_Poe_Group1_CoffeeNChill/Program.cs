@@ -31,6 +31,7 @@ var host = new HostBuilder()
         services.AddSingleton<IMenuRepository, TableMenuRepository>();
         services.AddSingleton<IOrderRepository, TableOrderRepository>();
         services.AddSingleton<ModelValidator>();
+        services.AddSingleton<OrderValidator>();
 
         /* Blob Storage for staff documents (Maheshen) - same connection string setting,
            same singleton-client pattern as Table Storage above. */

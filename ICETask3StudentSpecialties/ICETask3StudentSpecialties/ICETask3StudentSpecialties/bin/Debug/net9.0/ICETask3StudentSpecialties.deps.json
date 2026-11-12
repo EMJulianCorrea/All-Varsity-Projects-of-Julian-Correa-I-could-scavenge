@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {
+      "ICETask3StudentSpecialties/1.0.0": {
+        "runtime": {
+          "ICETask3StudentSpecialties.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "ICETask3StudentSpecialties/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

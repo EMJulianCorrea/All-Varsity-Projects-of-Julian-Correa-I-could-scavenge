@@ -200,7 +200,6 @@
             </Border>
         </Grid>
 
-        <!-- Guidance settings -->
         <Border x:Name="GuidancePanel"
                 Grid.Column="2"
                 Background="#101223"

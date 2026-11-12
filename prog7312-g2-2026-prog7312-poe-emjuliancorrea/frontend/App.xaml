@@ -1,4 +1,4 @@
-<Application x:Class="Smart_X.frontend.App"
+﻿<Application x:Class="Smart_X.frontend.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Smart_X"
@@ -15,7 +15,6 @@
             <SolidColorBrush x:Key="DangerBrush" Color="#D64545"/>
             <SolidColorBrush x:Key="OkBrush" Color="#2E9E5B"/>
 
-            <!-- Tile button used on the landing page -->
             <Style x:Key="LandingTileStyle" TargetType="Button">
                 <Setter Property="Background" Value="{StaticResource CardBrush}"/>
                 <Setter Property="BorderBrush" Value="#E2E5EC"/>

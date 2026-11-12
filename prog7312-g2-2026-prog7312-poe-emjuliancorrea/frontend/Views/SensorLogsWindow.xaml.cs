@@ -20,7 +20,8 @@ public partial class SensorLogsWindow : Window
         _sensor = sensor;
 
         HeaderText.Text = $"Hardware logs for {sensor.Id}";
-        FilterBox.ItemsSource = new[] { AllLabel }.Concat(Enum.GetNames<LogClassification>()).ToList();
+        FilterBox.ItemsSource = new[] { AllLabel }.Concat(Enum.GetValues<LogClassification>()
+            .Select(value => value == LogClassification.RawData ? "Raw Data" : value.ToString())).ToList();
         FilterBox.SelectedIndex = 0;
         HintText.Visibility = MainWindow.GuidanceEnabled ? Visibility.Visible : Visibility.Collapsed;
 
@@ -38,7 +39,8 @@ public partial class SensorLogsWindow : Window
 
     private LogClassification? CurrentFilter =>
         FilterBox.SelectedIndex > 0 && FilterBox.SelectedItem is string name
-            ? Enum.Parse<LogClassification>(name)
+            ? Enum.GetValues<LogClassification>().FirstOrDefault(value =>
+                string.Equals(value == LogClassification.RawData ? "Raw Data" : value.ToString(), name, StringComparison.Ordinal))
             : null;
 
     private async Task LoadLogsAsync()

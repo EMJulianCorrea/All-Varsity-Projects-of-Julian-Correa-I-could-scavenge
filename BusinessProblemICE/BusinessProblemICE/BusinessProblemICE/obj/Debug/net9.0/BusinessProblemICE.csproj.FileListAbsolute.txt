@@ -1,0 +1,14 @@
+C:\Users\lab_services_student\source\repos\BusinessProblemICE\BusinessProblemICE\obj\Debug\net9.0\BusinessProblemICE.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\lab_services_student\source\repos\BusinessProblemICE\BusinessProblemICE\obj\Debug\net9.0\BusinessProblemICE.AssemblyInfoInputs.cache
+C:\Users\lab_services_student\source\repos\BusinessProblemICE\BusinessProblemICE\obj\Debug\net9.0\BusinessProblemICE.AssemblyInfo.cs
+C:\Users\lab_services_student\source\repos\BusinessProblemICE\BusinessProblemICE\obj\Debug\net9.0\BusinessProblemICE.csproj.CoreCompileInputs.cache
+C:\Users\lab_services_student\source\repos\BusinessProblemICE\BusinessProblemICE\bin\Debug\net9.0\BusinessProblemICE.exe
+C:\Users\lab_services_student\source\repos\BusinessProblemICE\BusinessProblemICE\bin\Debug\net9.0\BusinessProblemICE.deps.json
+C:\Users\lab_services_student\source\repos\BusinessProblemICE\BusinessProblemICE\bin\Debug\net9.0\BusinessProblemICE.runtimeconfig.json
+C:\Users\lab_services_student\source\repos\BusinessProblemICE\BusinessProblemICE\bin\Debug\net9.0\BusinessProblemICE.dll
+C:\Users\lab_services_student\source\repos\BusinessProblemICE\BusinessProblemICE\bin\Debug\net9.0\BusinessProblemICE.pdb
+C:\Users\lab_services_student\source\repos\BusinessProblemICE\BusinessProblemICE\obj\Debug\net9.0\BusinessProblemICE.dll
+C:\Users\lab_services_student\source\repos\BusinessProblemICE\BusinessProblemICE\obj\Debug\net9.0\refint\BusinessProblemICE.dll
+C:\Users\lab_services_student\source\repos\BusinessProblemICE\BusinessProblemICE\obj\Debug\net9.0\BusinessProblemICE.pdb
+C:\Users\lab_services_student\source\repos\BusinessProblemICE\BusinessProblemICE\obj\Debug\net9.0\BusinessProblemICE.genruntimeconfig.cache
+C:\Users\lab_services_student\source\repos\BusinessProblemICE\BusinessProblemICE\obj\Debug\net9.0\ref\BusinessProblemICE.dll

@@ -15,6 +15,29 @@ public class Smart_XApiClient
         _http = new HttpClient { BaseAddress = new Uri(baseUrl) };
     }
 
+
+    public async Task<List<TelemetryReading>> GetTelemetryRangeAsync(string sensorId, DateTime from, DateTime to, int limit = 5000)
+    {
+        try
+        {
+            var url = $"/api/telemetry/{Uri.EscapeDataString(sensorId)}/range?from={Uri.EscapeDataString(from.ToUniversalTime().ToString("O"))}&to={Uri.EscapeDataString(to.ToUniversalTime().ToString("O"))}&limit={limit}";
+            return await _http.GetFromJsonAsync<List<TelemetryReading>>(url) ?? new();
+        }
+        catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or System.Text.Json.JsonException) { return new(); }
+    }
+
+    public async Task<System.Text.Json.JsonElement?> GetNetworkAnalysisAsync(string gatewayId)
+    {
+        try { return await _http.GetFromJsonAsync<System.Text.Json.JsonElement>($"/api/network/analyze?gatewayId={Uri.EscapeDataString(gatewayId)}"); }
+        catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or System.Text.Json.JsonException) { return null; }
+    }
+
+    public async Task<System.Text.Json.JsonElement?> GetNetworkTopologyAsync()
+    {
+        try { return await _http.GetFromJsonAsync<System.Text.Json.JsonElement>("/api/network/topology"); }
+        catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or System.Text.Json.JsonException) { return null; }
+    }
+
     public async Task<(bool Success, string? Error, SensorRecord? Sensor)> RegisterSensorAsync(SensorRecord sensor)
     {
         try
@@ -178,9 +201,22 @@ public class Smart_XApiClient
                 return (false, await ReadErrorAsync(response) ?? $"Download failed with status {response.StatusCode}.");
 
             await using var source = await response.Content.ReadAsStreamAsync();
-            await using var target = File.Create(destinationPath);
-            await source.CopyToAsync(target);
-            return (true, null);
+            var temporaryPath = destinationPath + ".download";
+            try
+            {
+                await using (var target = new FileStream(temporaryPath, FileMode.Create, FileAccess.Write, FileShare.None, 81920, useAsync: true))
+                {
+                    await source.CopyToAsync(target);
+                    await target.FlushAsync();
+                }
+                File.Move(temporaryPath, destinationPath, overwrite: true);
+                return (true, null);
+            }
+            catch
+            {
+                try { File.Delete(temporaryPath); } catch (IOException) { }
+                throw;
+            }
         }
         catch (HttpRequestException ex)
         {

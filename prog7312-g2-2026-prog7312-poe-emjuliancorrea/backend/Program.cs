@@ -30,6 +30,7 @@ app.MapGet("/", () => Results.Redirect("/swagger"));
 var sensors = new Dictionary<string, SensorRecord>();
 var stream = new CommandStreamService(sensors);
 var logStore = new LogStorageService(Path.Combine(AppContext.BaseDirectory, "sensor-logs"));
+var network = new NetworkTopologyService();
 
 app.MapGet("/api/health", () => Results.Ok(new { status = "OK", time = DateTime.UtcNow }));
 
@@ -105,6 +106,7 @@ app.MapPut("/api/sensors/{id}", (string id, SensorRecord updated) =>
 app.MapPost("/api/telemetry", (TelemetryReading reading) =>
 {
     var (outcome, error) = stream.Ingest(reading);
+    if (outcome == IngestOutcome.Accepted) network.Record(reading);
     return outcome switch
     {
         IngestOutcome.Accepted => Results.Created($"/api/telemetry/{reading.SensorId}", reading),
@@ -114,7 +116,38 @@ app.MapPost("/api/telemetry", (TelemetryReading reading) =>
 });
 
 app.MapPost("/api/telemetry/batch", (List<TelemetryReading> readings) =>
-    Results.Ok(stream.IngestBatch(readings)));
+{
+    int accepted = 0, rejected = 0;
+    var errors = new List<string>();
+    foreach (var reading in readings)
+    {
+        var (outcome, error) = stream.Ingest(reading);
+        if (outcome == IngestOutcome.Accepted) { network.Record(reading); accepted++; }
+        else { rejected++; if (error is not null && errors.Count < 10 && !errors.Contains(error)) errors.Add(error); }
+    }
+    return Results.Ok(new BatchResult(accepted, rejected, errors));
+});
+
+app.MapGet("/api/telemetry/{sensorId}/range", (string sensorId, DateTime from, DateTime to, int limit = 5000) =>
+{
+    if (from > to) return Results.BadRequest(new { error = "'from' must be earlier than or equal to 'to'." });
+    if (limit < 1 || limit > 10000) return Results.BadRequest(new { error = "'limit' must be between 1 and 10,000." });
+    return Results.Ok(network.Query(sensorId, from, to, limit));
+});
+
+app.MapGet("/api/network/topology", () => { lock (sensors) return Results.Ok(network.GetTopology(sensors.Values)); });
+
+app.MapPut("/api/network/topology", (MeshTopology topology) =>
+{
+    try { network.Configure(topology); lock (sensors) return Results.Ok(network.GetTopology(sensors.Values)); }
+    catch (ArgumentException ex) { return Results.BadRequest(new { error = ex.Message }); }
+});
+
+app.MapGet("/api/network/analyze", (string gatewayId) =>
+{
+    try { lock (sensors) return Results.Ok(network.Analyze(sensors.Values, gatewayId)); }
+    catch (ArgumentException ex) { return Results.BadRequest(new { error = ex.Message }); }
+});
 
 app.MapGet("/api/telemetry/{sensorId}", (string sensorId, int take = 50) =>
     Results.Ok(stream.GetRecent(take, sensorId)));
@@ -157,8 +190,10 @@ app.MapPost("/api/logs/classify", (ClassifyRequest request) =>
 {
     if (string.IsNullOrWhiteSpace(request.FileName))
         return Results.BadRequest(new { error = "A file name is required." });
-
-    return Results.Ok(LogClassifier.Classify(request.FileName, request.Sample));
+    if (request.FileName.Length > 255)
+        return Results.BadRequest(new { error = "The file name is too long." });
+     var sample = request.Sample is null ? string.Empty : request.Sample[..Math.Min(request.Sample.Length, 4096)];
+    return Results.Ok(LogClassifier.Classify(Path.GetFileName(request.FileName), sample));
 });
 
 app.MapPost("/api/sensors/{id}/logs", async (string id, HttpRequest request) =>
@@ -229,9 +264,9 @@ app.MapDelete("/api/sensors/{id}/logs/{logId:guid}", (string id, Guid logId) =>
 
 app.MapGet("/api/demo/telemetry-packet", () =>
 {
-    var temperature = TelemetryPacket.For("TEMP-01", 21.4f, "°C"); 
+    var temperature = TelemetryPacket.For("TEMP-01", 21.4f, "°C");
     var powerDraw = TelemetryPacket.For("PWR-01", 1450, "W");
-    var switchState = TelemetryPacket.For("SWITCH-01", true, "on/off"); 
+    var switchState = TelemetryPacket.For("SWITCH-01", true, "on/off");
 
     return Results.Ok(new
     {

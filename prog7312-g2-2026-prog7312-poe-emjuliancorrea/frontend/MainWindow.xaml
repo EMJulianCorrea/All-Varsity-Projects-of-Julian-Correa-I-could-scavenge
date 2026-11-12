@@ -10,7 +10,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Top bar: back button + breadcrumb, and a persistent guidance toggle -->
         <Border Grid.Row="0" Background="{StaticResource BrandDarkBrush}" Padding="16,10">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -22,7 +21,7 @@
                 <StackPanel Orientation="Horizontal" Grid.Column="0">
                     <Button x:Name="BackButton" Content="&#8592; Return" Style="{StaticResource SecondaryButtonStyle}"
                             Click="BackButton_Click" Visibility="Collapsed" Margin="0,0,12,0"/>
-                    <TextBlock Text="IoT Telemetry Console" Foreground="White" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <TextBlock Text="Smart-X" Foreground="White" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
                 </StackPanel>
 
                 <TextBlock x:Name="BreadcrumbText" Grid.Column="1" Foreground="#B9BEDA" VerticalAlignment="Center" Margin="16,0,0,0"/>

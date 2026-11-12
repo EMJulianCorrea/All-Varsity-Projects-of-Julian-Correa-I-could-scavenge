@@ -19,6 +19,10 @@ In Part 1, I implemented the initial application: a dashboard to navigate to all
 
 In Part 2, I added the **Real-Time Command Stream and History** page, which has a live dashboard showing incoming sensor data, where users can search sensors by category and manually override sensors. The API processes telemetry through purpose-chosen data structures (queue, priority queue, stack, dictionary, sorted dictionary and hash set).
 
+## Part 3
+
+Part 3 adds the **Network Topology & Mesh Routing** page, an indexed telemetry history, graph-based connectivity analysis, Prim routing, and a complete hardware-log classify/upload/list/download/delete workflow.
+
 ---
 
 ## Prerequisites
@@ -114,7 +118,7 @@ Always rebuild with `--build` after backend changes. Docker reuses the old image
 
 ## App Functions
 
-### As of Part 2
+### As of Part 3
 
 - Register a sensor using a unique ID, a deployment location and a category
 - View all sensors in a list
@@ -141,16 +145,6 @@ Always rebuild with `--build` after backend changes. Docker reuses the old image
 - View sensor alerts from most to least severe.
 - View override history.
 
-### Hardware logs: classify, upload, download
-
-Select a sensor on the registration page, then use **Attach Hardware Log** or **Manage Logs**.
-
-1. **Choose a file:** **Attach Hardware Log** opens a dialog with a Browse button (a standard file picker). Files are checked before upload: allowed types are `.log .txt .csv .json .xml .cfg .conf .ini .yaml .yml .bin .hex .fw .dat .zip`, up to 10 MB, and not empty.
-2. **Classify it:** the API suggests a classification and explains why. Change it if it is wrong. The options are Diagnostic, Error, Calibration, Firmware, Configuration, Raw Data and Other. The suggestion comes from the file name, the extension and the start of the file's contents (for example, a `.log` containing `ERROR` is suggested as Error).
-3. **Upload:** the file is stored on the API with its classification.
-4. **Download:** **Manage Logs** lists the sensor's logs, newest first. Use the filter to show one classification, then **Download...** to save a copy under its original name, or **Delete** to remove it.
-
-The **Network Topology and Mesh Routing** tile is not built yet and shows a "coming soon" message.
 
 ## API endpoints
 
@@ -162,11 +156,14 @@ Browse and try all of them at `/swagger`.
 | POST | `/api/sensors` | Register a sensor |
 | GET | `/api/sensors?category=` | List sensors, optionally filtered by category |
 | GET / PUT / DELETE | `/api/sensors/{id}` | Get, edit or delete one sensor |
-| POST | `/api/logs/classify` | Suggest a classification from a file name and the start of its contents |
+| POST | `/api/logs/classify` | Suggest a classification from a file name and up to the first 4 KB of contents |
 | POST | `/api/sensors/{id}/logs` | Upload a log (multipart: `file`, optional `classification`; omit it to classify automatically) |
 | GET | `/api/sensors/{id}/logs?classification=` | List a sensor's logs, optionally filtered by classification |
 | GET | `/api/sensors/{id}/logs/{logId}/download` | Download the original file |
 | DELETE | `/api/sensors/{id}/logs/{logId}` | Delete one log |
+| GET / PUT | `/api/network/topology` | Read or configure mesh graph nodes and weighted wireless links |
+| GET | `/api/network/analyze?gatewayId=` | DFS reachability, offline devices, Prim MST/forest and server routes |
+| GET | `/api/telemetry/{sensorId}/range?from=&to=&limit=` | Timestamp-bounded retrieval from the sensor AVL tree |
 | POST | `/api/telemetry` | Submit one reading (goes through the FIFO queue) |
 | POST | `/api/telemetry/batch` | Submit many readings at once |
 | GET | `/api/telemetry` and `/api/telemetry/{sensorId}` | Recent readings, newest first |
@@ -192,3 +189,17 @@ Browse and try all of them at `/swagger`.
 | A sensor's telemetry is rejected with a conflict message | The sensor was disabled by a manual override. Apply **Enable** or **Undo Last**. |
 | Certificate errors when using the HTTPS address (`dotnet run` only) | Run `dotnet dev-certs https --trust` once, or use the HTTP address. |
 | Odd XAML or build errors after pulling changes | Delete the `bin` and `obj` folders in `frontend/` and `backend/`, then run `dotnet restore` again. |
+
+
+
+## Algorithm source attributions
+
+The project contains original C# implementations of standard algorithms; the sources below are algorithm references, not copied source-code repositories:
+
+1. Adelson-Velsky, G. M. and Landis, E. M. (1962), “An algorithm for the organization of information,” *Soviet Mathematics Doklady*, 3, 1259–1263. AVL height-balance invariant and rotations used by `TelemetryTimestampBst`.
+2. Sedgewick, R. and Wayne, K. (2011), *Algorithms*, 4th ed., Addison-Wesley, Chapters 3.2 (Binary Search Trees), 4.1 (Undirected Graphs), and 4.3 (Minimum Spanning Trees). Reference for ordered search-tree range traversal, adjacency-list graph modelling and MST concepts.
+3. Prim, R. C. (1957), “Shortest Connection Networks and Some Generalizations,” *Bell System Technical Journal*, 36(6), 1389–1401. Reference for Prim's minimum-spanning-tree method.
+4. Williams, J. W. J. (1964), “Algorithm 232: Heapsort,” *Communications of the ACM*, 7(6), 347–348. Reference for the array-backed binary-heap ordering used by the custom `EdgeMinHeap`.
+5. Cormen, T. H., Leiserson, C. E., Rivest, R. L. and Stein, C. (2022), *Introduction to Algorithms*, 4th ed., MIT Press, graph traversal and minimum-spanning-tree chapters. Reference for DFS traversal and MST correctness/complexity.
+
+

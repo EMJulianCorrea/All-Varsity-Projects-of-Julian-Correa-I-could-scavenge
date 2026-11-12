@@ -1,0 +1,257 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\lab_services_student\\source\\repos\\App4Function\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{C74CD319-112D-4903-BD2E-8D9277415016}|App4Function\\App4Function.csproj|c:\\users\\lab_services_student\\source\\repos\\app4function\\app4function\\views\\fileupload.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C74CD319-112D-4903-BD2E-8D9277415016}|App4Function\\App4Function.csproj|solutionrelative:app4function\\views\\fileupload.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C74CD319-112D-4903-BD2E-8D9277415016}|App4Function\\App4Function.csproj|c:\\users\\lab_services_student\\source\\repos\\app4function\\app4function\\views\\blobupload.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C74CD319-112D-4903-BD2E-8D9277415016}|App4Function\\App4Function.csproj|solutionrelative:app4function\\views\\blobupload.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C74CD319-112D-4903-BD2E-8D9277415016}|App4Function\\App4Function.csproj|c:\\users\\lab_services_student\\source\\repos\\app4function\\app4function\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C74CD319-112D-4903-BD2E-8D9277415016}|App4Function\\App4Function.csproj|solutionrelative:app4function\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C74CD319-112D-4903-BD2E-8D9277415016}|App4Function\\App4Function.csproj|c:\\users\\lab_services_student\\source\\repos\\app4function\\app4function\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C74CD319-112D-4903-BD2E-8D9277415016}|App4Function\\App4Function.csproj|solutionrelative:app4function\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C74CD319-112D-4903-BD2E-8D9277415016}|App4Function\\App4Function.csproj|c:\\users\\lab_services_student\\source\\repos\\app4function\\app4function\\data\\app4functioncontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C74CD319-112D-4903-BD2E-8D9277415016}|App4Function\\App4Function.csproj|solutionrelative:app4function\\data\\app4functioncontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C74CD319-112D-4903-BD2E-8D9277415016}|App4Function\\App4Function.csproj|c:\\users\\lab_services_student\\source\\repos\\app4function\\app4function\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C74CD319-112D-4903-BD2E-8D9277415016}|App4Function\\App4Function.csproj|solutionrelative:app4function\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C74CD319-112D-4903-BD2E-8D9277415016}|App4Function\\App4Function.csproj|c:\\users\\lab_services_student\\source\\repos\\app4function\\app4function\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C74CD319-112D-4903-BD2E-8D9277415016}|App4Function\\App4Function.csproj|solutionrelative:app4function\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C74CD319-112D-4903-BD2E-8D9277415016}|App4Function\\App4Function.csproj|c:\\users\\lab_services_student\\source\\repos\\app4function\\app4function\\controllers\\filesharecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C74CD319-112D-4903-BD2E-8D9277415016}|App4Function\\App4Function.csproj|solutionrelative:app4function\\controllers\\filesharecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C74CD319-112D-4903-BD2E-8D9277415016}|App4Function\\App4Function.csproj|c:\\users\\lab_services_student\\source\\repos\\app4function\\app4function\\controllers\\customerscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C74CD319-112D-4903-BD2E-8D9277415016}|App4Function\\App4Function.csproj|solutionrelative:app4function\\controllers\\customerscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C74CD319-112D-4903-BD2E-8D9277415016}|App4Function\\App4Function.csproj|c:\\users\\lab_services_student\\source\\repos\\app4function\\app4function\\models\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C74CD319-112D-4903-BD2E-8D9277415016}|App4Function\\App4Function.csproj|solutionrelative:app4function\\models\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C74CD319-112D-4903-BD2E-8D9277415016}|App4Function\\App4Function.csproj|c:\\users\\lab_services_student\\source\\repos\\app4function\\app4function\\service\\fileshareservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C74CD319-112D-4903-BD2E-8D9277415016}|App4Function\\App4Function.csproj|solutionrelative:app4function\\service\\fileshareservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C74CD319-112D-4903-BD2E-8D9277415016}|App4Function\\App4Function.csproj|c:\\users\\lab_services_student\\source\\repos\\app4function\\app4function\\models\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C74CD319-112D-4903-BD2E-8D9277415016}|App4Function\\App4Function.csproj|solutionrelative:app4function\\models\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C74CD319-112D-4903-BD2E-8D9277415016}|App4Function\\App4Function.csproj|c:\\users\\lab_services_student\\source\\repos\\app4function\\app4function\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C74CD319-112D-4903-BD2E-8D9277415016}|App4Function\\App4Function.csproj|solutionrelative:app4function\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C74CD319-112D-4903-BD2E-8D9277415016}|App4Function\\App4Function.csproj|c:\\users\\lab_services_student\\source\\repos\\app4function\\app4function\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{C74CD319-112D-4903-BD2E-8D9277415016}|App4Function\\App4Function.csproj|solutionrelative:app4function\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "BlobUpload.cshtml",
+              "DocumentMoniker": "C:\\Users\\lab_services_student\\source\\repos\\App4Function\\App4Function\\Views\\BlobUpload.cshtml",
+              "RelativeDocumentMoniker": "App4Function\\Views\\BlobUpload.cshtml",
+              "ToolTip": "C:\\Users\\lab_services_student\\source\\repos\\App4Function\\App4Function\\Views\\BlobUpload.cshtml",
+              "RelativeToolTip": "App4Function\\Views\\BlobUpload.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-08-28T21:10:40.681Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\Users\\lab_services_student\\source\\repos\\App4Function\\App4Function\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "App4Function\\Controllers\\HomeController.cs",
+              "ToolTip": "C:\\Users\\lab_services_student\\source\\repos\\App4Function\\App4Function\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "App4Function\\Controllers\\HomeController.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAA3wAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-28T21:09:44.746Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "OrdersController.cs",
+              "DocumentMoniker": "C:\\Users\\lab_services_student\\source\\repos\\App4Function\\App4Function\\Controllers\\OrdersController.cs",
+              "RelativeDocumentMoniker": "App4Function\\Controllers\\OrdersController.cs",
+              "ToolTip": "C:\\Users\\lab_services_student\\source\\repos\\App4Function\\App4Function\\Controllers\\OrdersController.cs",
+              "RelativeToolTip": "App4Function\\Controllers\\OrdersController.cs",
+              "ViewState": "AgIAAIMAAAAAAAAAAAAqwBgAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-28T18:45:47.694Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\lab_services_student\\source\\repos\\App4Function\\App4Function\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "App4Function\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\lab_services_student\\source\\repos\\App4Function\\App4Function\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "App4Function\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACYAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-08-28T19:20:46.415Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ProductsController.cs",
+              "DocumentMoniker": "C:\\Users\\lab_services_student\\source\\repos\\App4Function\\App4Function\\Controllers\\ProductsController.cs",
+              "RelativeDocumentMoniker": "App4Function\\Controllers\\ProductsController.cs",
+              "ToolTip": "C:\\Users\\lab_services_student\\source\\repos\\App4Function\\App4Function\\Controllers\\ProductsController.cs",
+              "RelativeToolTip": "App4Function\\Controllers\\ProductsController.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAJkAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-28T18:46:21.823Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "FileUpload.cshtml",
+              "DocumentMoniker": "C:\\Users\\lab_services_student\\source\\repos\\App4Function\\App4Function\\Views\\FileUpload.cshtml",
+              "RelativeDocumentMoniker": "App4Function\\Views\\FileUpload.cshtml",
+              "ToolTip": "C:\\Users\\lab_services_student\\source\\repos\\App4Function\\App4Function\\Views\\FileUpload.cshtml",
+              "RelativeToolTip": "App4Function\\Views\\FileUpload.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-08-26T14:26:24.247Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "CustomersController.cs",
+              "DocumentMoniker": "C:\\Users\\lab_services_student\\source\\repos\\App4Function\\App4Function\\Controllers\\CustomersController.cs",
+              "RelativeDocumentMoniker": "App4Function\\Controllers\\CustomersController.cs",
+              "ToolTip": "C:\\Users\\lab_services_student\\source\\repos\\App4Function\\App4Function\\Controllers\\CustomersController.cs",
+              "RelativeToolTip": "App4Function\\Controllers\\CustomersController.cs",
+              "ViewState": "AgIAAJQAAAAAAAAAAAAuwHgAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-28T18:44:53.213Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "App4FunctionContext.cs",
+              "DocumentMoniker": "C:\\Users\\lab_services_student\\source\\repos\\App4Function\\App4Function\\Data\\App4FunctionContext.cs",
+              "RelativeDocumentMoniker": "App4Function\\Data\\App4FunctionContext.cs",
+              "ToolTip": "C:\\Users\\lab_services_student\\source\\repos\\App4Function\\App4Function\\Data\\App4FunctionContext.cs",
+              "RelativeToolTip": "App4Function\\Data\\App4FunctionContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-28T16:57:24.865Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Customer.cs",
+              "DocumentMoniker": "C:\\Users\\lab_services_student\\source\\repos\\App4Function\\App4Function\\Models\\Customer.cs",
+              "RelativeDocumentMoniker": "App4Function\\Models\\Customer.cs",
+              "ToolTip": "C:\\Users\\lab_services_student\\source\\repos\\App4Function\\App4Function\\Models\\Customer.cs",
+              "RelativeToolTip": "App4Function\\Models\\Customer.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-28T18:22:12.481Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "FileShareService.cs",
+              "DocumentMoniker": "C:\\Users\\lab_services_student\\source\\repos\\App4Function\\App4Function\\Service\\FileShareService.cs",
+              "RelativeDocumentMoniker": "App4Function\\Service\\FileShareService.cs",
+              "ToolTip": "C:\\Users\\lab_services_student\\source\\repos\\App4Function\\App4Function\\Service\\FileShareService.cs",
+              "RelativeToolTip": "App4Function\\Service\\FileShareService.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAqwAsAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-26T14:07:30.409Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "FileShareController.cs",
+              "DocumentMoniker": "C:\\Users\\lab_services_student\\source\\repos\\App4Function\\App4Function\\Controllers\\FileShareController.cs",
+              "RelativeDocumentMoniker": "App4Function\\Controllers\\FileShareController.cs",
+              "ToolTip": "C:\\Users\\lab_services_student\\source\\repos\\App4Function\\App4Function\\Controllers\\FileShareController.cs",
+              "RelativeToolTip": "App4Function\\Controllers\\FileShareController.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAgwCAAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-26T14:24:59.236Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Order.cs",
+              "DocumentMoniker": "C:\\Users\\lab_services_student\\source\\repos\\App4Function\\App4Function\\Models\\Order.cs",
+              "RelativeDocumentMoniker": "App4Function\\Models\\Order.cs",
+              "ToolTip": "C:\\Users\\lab_services_student\\source\\repos\\App4Function\\App4Function\\Models\\Order.cs",
+              "RelativeToolTip": "App4Function\\Models\\Order.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-28T18:23:37.778Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\lab_services_student\\source\\repos\\App4Function\\App4Function\\appsettings.json",
+              "RelativeDocumentMoniker": "App4Function\\appsettings.json",
+              "ToolTip": "C:\\Users\\lab_services_student\\source\\repos\\App4Function\\App4Function\\appsettings.json",
+              "RelativeToolTip": "App4Function\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-08-25T16:30:48.876Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\lab_services_student\\source\\repos\\App4Function\\App4Function\\Program.cs",
+              "RelativeDocumentMoniker": "App4Function\\Program.cs",
+              "ToolTip": "C:\\Users\\lab_services_student\\source\\repos\\App4Function\\App4Function\\Program.cs",
+              "RelativeToolTip": "App4Function\\Program.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAD4vywAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-23T18:37:30.025Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

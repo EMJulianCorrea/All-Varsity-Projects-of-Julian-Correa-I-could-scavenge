@@ -20,3 +20,8 @@ local.properties
 # Azure deployment artifacts
 api/publish*/
 api/*.zip
+# Azure deployment artifacts
+/publish-*/
+/drivemate-api-*.zip
+api/publish*/
+api/*.zip

@@ -29,12 +29,11 @@ public partial class CommandStream : Page, IGuidanceAware
 
         _timer.Tick += async (_, _) => await PollAsync();
 
-        // Put the search text back as it was, without triggering a fetch.
         _restoringState = true;
         SearchBox.Text = StreamViewState.SearchText;
         _restoringState = false;
 
-        ShowLiveState();   // after InitializeComponent, so the Checked handler can use named controls
+        ShowLiveState();
     }
 
     private async void Page_Loaded(object sender, RoutedEventArgs e)
@@ -49,14 +48,11 @@ public partial class CommandStream : Page, IGuidanceAware
         }
         else if (StreamViewState.LastSnapshot is { } frozen)
         {
-            // Paused: show exactly what was on screen when it was paused. Nothing is fetched, so
-            // readings that arrived while the user was away do not appear.
             Render(frozen);
             ShowPausedStatus();
         }
         else
         {
-            // Paused before anything had ever loaded, so there is nothing to show yet: fetch once.
             await PollAsync(force: true);
             if (StreamViewState.LastSnapshot is not null) ShowPausedStatus();
         }
@@ -72,8 +68,6 @@ public partial class CommandStream : Page, IGuidanceAware
         AlertsHintText.Visibility = visibility;
     }
 
-    // A paused view never fetches, whoever asks (timer, search, an action, returning to the page).
-    // Only force: true overrides that.
     private async Task PollAsync(bool force = false)
     {
         if (!force && !StreamViewState.Live) return;
@@ -88,7 +82,6 @@ public partial class CommandStream : Page, IGuidanceAware
                 filterUsed = _categoryFilter;
                 var snapshot = await MainWindow.ApiClient.GetSnapshotAsync(filterUsed);
 
-                // The user may have pressed Pause while this request was in flight: drop the result.
                 if (!force && !StreamViewState.Live) return;
 
                 if (snapshot is null)
@@ -143,7 +136,7 @@ public partial class CommandStream : Page, IGuidanceAware
     private void LiveToggle_Changed(object sender, RoutedEventArgs e)
     {
         var live = LiveToggle.IsChecked == true;
-        StreamViewState.Live = live;   // remembered for the next time this page is opened
+        StreamViewState.Live = live; 
         ApplyLiveUi(live);
 
         if (!live)
@@ -151,10 +144,10 @@ public partial class CommandStream : Page, IGuidanceAware
             _timer.Stop();
             if (IsLoaded) ShowPausedStatus();
         }
-        else if (IsLoaded)   // before the page has loaded, Page_Loaded starts things
+        else if (IsLoaded)
         {
             _timer.Start();
-            _ = PollAsync();   // catch up straight away rather than waiting for the next tick
+            _ = PollAsync(); 
         }
     }
 
@@ -162,8 +155,6 @@ public partial class CommandStream : Page, IGuidanceAware
 
     private static string ToggleText(bool live) => live ? "● Live" : "❚❚ Paused";
 
-    // The button label and the search box follow the live/paused state. Search is locked while
-    // paused because changing it would need fresh data from the API, which a pause must not fetch.
     private void ApplyLiveUi(bool live)
     {
         LiveToggle.Content = ToggleText(live);
@@ -171,8 +162,6 @@ public partial class CommandStream : Page, IGuidanceAware
         SearchBox.ToolTip = live ? SearchTip : "Search is locked while paused. Press Live to change it.";
     }
 
-    // Puts the toggle into the remembered state. The label is set explicitly (in ApplyLiveUi) because
-    // setting IsChecked to the value it already has raises no event, so the handler would not run.
     private void ShowLiveState()
     {
         LiveToggle.IsChecked = StreamViewState.Live;
@@ -270,8 +259,6 @@ public partial class CommandStream : Page, IGuidanceAware
         await FinishActionAsync(success ? "All alerts cleared." : error ?? "Could not clear alerts.", isError: !success);
     }
 
-    // Shows the outcome of something the user did. While paused it deliberately does not refresh,
-    // because that would pull in everything that happened since the pause; it says so instead.
     private async Task FinishActionAsync(string message, bool isError)
     {
         if (StreamViewState.Live)

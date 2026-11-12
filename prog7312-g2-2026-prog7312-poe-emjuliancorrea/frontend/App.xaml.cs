@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Threading;
 
 namespace Smart_X.frontend;
+
 public partial class App : Application
 {
     private static readonly string LogPath = Path.Combine(

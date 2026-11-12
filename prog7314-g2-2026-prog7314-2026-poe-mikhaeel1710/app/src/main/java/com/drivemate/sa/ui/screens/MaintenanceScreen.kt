@@ -1,5 +1,9 @@
 package com.drivemate.sa.ui.screens
 
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,15 +17,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.drivemate.sa.R
 import com.drivemate.sa.network.MaintenanceRecord
 import com.drivemate.sa.network.MaintenanceType
 import com.drivemate.sa.ui.theme.DriveMateTheme
 import java.time.LocalDate
 
-
-//Vehicle Health / Maintenance screen — pure UI, no data-layer dependency.
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MaintenanceScreen(
@@ -31,79 +35,185 @@ fun MaintenanceScreen(
     onDeleteRecord: (String) -> Unit = {},
     onBack: () -> Unit = {}
 ) {
-    var selectedTab by remember { mutableStateOf(0) }
-    var showAddSheet by remember { mutableStateOf(false) }
+    var selectedTab by remember {
+        mutableStateOf(0)
+    }
+
+    var showAddSheet by remember {
+        mutableStateOf(false)
+    }
 
     val today = LocalDate.now()
-    val upcoming = records.filter { it.isUpcoming(today) }.sortedBy { it.nextDueDate ?: it.date }
-    val history = records.filterNot { it.isUpcoming(today) }.sortedByDescending { it.date }
+
+    val upcoming = records
+        .filter { it.isUpcoming(today) }
+        .sortedBy {
+            it.nextDueDate ?: it.date
+        }
+
+    val history = records
+        .filterNot { it.isUpcoming(today) }
+        .sortedByDescending {
+            it.date
+        }
 
     Scaffold(
+        containerColor = MaterialTheme.colorScheme.background,
         floatingActionButton = {
-            FloatingActionButton(onClick = { showAddSheet = true }) {
-                Icon(Icons.Filled.Add, contentDescription = "Add maintenance record")
+            FloatingActionButton(
+                onClick = {
+                    showAddSheet = true
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = stringResource(
+                        R.string.add_maintenance_record
+                    )
+                )
             }
         }
     ) { padding ->
-        Column(modifier = Modifier.padding(padding).fillMaxSize()) {
+
+        Column(
+            modifier = Modifier
+                .padding(padding)
+                .fillMaxSize()
+        ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 12.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                    .padding(
+                        horizontal = 20.dp,
+                        vertical = 12.dp
+                    ),
+                horizontalArrangement =
+                    Arrangement.SpaceBetween,
+                verticalAlignment =
+                    Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Vehicle Health",
-                    style = MaterialTheme.typography.headlineSmall
+                    text = stringResource(
+                        R.string.vehicle_health
+                    ),
+                    style =
+                        MaterialTheme.typography
+                            .headlineSmall
                 )
-
-                TextButton(
+                IconButton(
                     onClick = onBack
                 ) {
-                    Text("Back")
-                }
-            }
-
-            TabRow(selectedTabIndex = selectedTab) {
-                Tab(
-                    selected = selectedTab == 0,
-                    onClick = { selectedTab = 0 },
-                    text = { Text("Upcoming (${upcoming.size})") }
-                )
-                Tab(
-                    selected = selectedTab == 1,
-                    onClick = { selectedTab = 1 },
-                    text = { Text("History (${history.size})") }
-                )
-            }
-
-            val visibleRecords = if (selectedTab == 0) upcoming else history
-
-            if (visibleRecords.isEmpty()) {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(
-                        text = if (selectedTab == 0) "No upcoming maintenance — you're all caught up."
-                        else "No service history yet.",
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = stringResource(
+                            R.string.back
+                        ),
+                        tint = MaterialTheme.colorScheme.onBackground
                     )
                 }
-            } else {
-                LazyColumn(
-                    contentPadding = PaddingValues(horizontal = 20.dp, vertical = 12.dp),
-                    verticalArrangement = Arrangement.spacedBy(10.dp)
-                ) {
-                    items(visibleRecords, key = { it.id }) { record ->
-                        val dismissState = rememberSwipeToDismissBoxState(
-                            confirmValueChange = { value ->
-                                if (value != SwipeToDismissBoxValue.Settled) {
-                                    onDeleteRecord(record.id)
-                                    true
-                                } else {
-                                    false
-                                }
-                            }
+            }
+
+            TabRow(
+                selectedTabIndex = selectedTab
+            ) {
+                Tab(
+                    selected = selectedTab == 0,
+                    onClick = {
+                        selectedTab = 0
+                    },
+                    text = {
+                        Text(
+                            stringResource(
+                                R.string.maintenance_upcoming_count,
+                                upcoming.size
+                            )
                         )
+                    }
+                )
+
+                Tab(
+                    selected = selectedTab == 1,
+                    onClick = {
+                        selectedTab = 1
+                    },
+                    text = {
+                        Text(
+                            stringResource(
+                                R.string.maintenance_history_count,
+                                history.size
+                            )
+                        )
+                    }
+                )
+            }
+
+            val visibleRecords =
+                if (selectedTab == 0) {
+                    upcoming
+                } else {
+                    history
+                }
+
+            if (visibleRecords.isEmpty()) {
+
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment =
+                        Alignment.Center
+                ) {
+                    Text(
+                        text =
+                            if (selectedTab == 0) {
+                                stringResource(
+                                    R.string.no_upcoming_maintenance
+                                )
+                            } else {
+                                stringResource(
+                                    R.string.no_service_history
+                                )
+                            },
+                        color =
+                            MaterialTheme.colorScheme
+                                .onSurfaceVariant
+                    )
+                }
+
+            } else {
+
+                LazyColumn(
+                    contentPadding = PaddingValues(
+                        horizontal = 20.dp,
+                        vertical = 12.dp
+                    ),
+                    verticalArrangement =
+                        Arrangement.spacedBy(10.dp)
+                ) {
+                    items(
+                        visibleRecords,
+                        key = {
+                            it.id
+                        }
+                    ) { record ->
+
+                        val dismissState =
+                            rememberSwipeToDismissBoxState(
+                                confirmValueChange = { value ->
+
+                                    if (
+                                        value !=
+                                        SwipeToDismissBoxValue
+                                            .Settled
+                                    ) {
+                                        onDeleteRecord(
+                                            record.id
+                                        )
+
+                                        true
+                                    } else {
+                                        false
+                                    }
+                                }
+                            )
 
                         SwipeToDismissBox(
                             state = dismissState,
@@ -111,15 +221,33 @@ fun MaintenanceScreen(
                                 Box(
                                     modifier = Modifier
                                         .fillMaxSize()
-                                        .clip(RoundedCornerShape(16.dp))
-                                        .background(MaterialTheme.colorScheme.errorContainer)
-                                        .padding(horizontal = 20.dp),
-                                    contentAlignment = Alignment.CenterEnd
+                                        .clip(
+                                            RoundedCornerShape(
+                                                16.dp
+                                            )
+                                        )
+                                        .background(
+                                            MaterialTheme
+                                                .colorScheme
+                                                .errorContainer
+                                        )
+                                        .padding(
+                                            horizontal = 20.dp
+                                        ),
+                                    contentAlignment =
+                                        Alignment.CenterEnd
                                 ) {
                                     Icon(
-                                        imageVector = Icons.Filled.Delete,
-                                        contentDescription = "Delete",
-                                        tint = MaterialTheme.colorScheme.onErrorContainer
+                                        imageVector =
+                                            Icons.Filled.Delete,
+                                        contentDescription =
+                                            stringResource(
+                                                R.string.delete
+                                            ),
+                                        tint =
+                                            MaterialTheme
+                                                .colorScheme
+                                                .onErrorContainer
                                     )
                                 }
                             }
@@ -127,12 +255,24 @@ fun MaintenanceScreen(
                             MaintenanceRecordCard(
                                 record = record,
                                 onClick = {
-                                    if (selectedTab == 0) onMarkCompleted(record)
+                                    if (
+                                        selectedTab == 0
+                                    ) {
+                                        onMarkCompleted(
+                                            record
+                                        )
+                                    }
                                 }
                             )
                         }
                     }
-                    item { Spacer(modifier = Modifier.height(72.dp)) } // clears the FAB
+
+                    item {
+                        Spacer(
+                            modifier =
+                                Modifier.height(72.dp)
+                        )
+                    }
                 }
             }
         }
@@ -140,7 +280,9 @@ fun MaintenanceScreen(
 
     if (showAddSheet) {
         AddMaintenanceRecordSheet(
-            onDismiss = { showAddSheet = false },
+            onDismiss = {
+                showAddSheet = false
+            },
             onSave = { record ->
                 onAddRecord(record)
                 showAddSheet = false
@@ -156,16 +298,19 @@ private fun MaintenanceScreenPreview() {
         MaintenanceRecord(
             type = MaintenanceType.SERVICE,
             title = "Oil Change",
-            date = LocalDate.now().minusDays(30),
+            date = LocalDate.now()
+                .minusDays(30),
             mileageKm = 82000,
             cost = 950.0,
-            nextDueDate = LocalDate.now().plusDays(15),
+            nextDueDate = LocalDate.now()
+                .plusDays(15),
             completed = true
         ),
         MaintenanceRecord(
             type = MaintenanceType.REPAIR,
             title = "Wheel Alignment",
-            date = LocalDate.now().minusDays(10),
+            date = LocalDate.now()
+                .minusDays(10),
             mileageKm = 83200,
             cost = 450.0,
             completed = true
@@ -173,12 +318,17 @@ private fun MaintenanceScreenPreview() {
         MaintenanceRecord(
             type = MaintenanceType.INSPECTION,
             title = "Licence Disc Renewal",
-            date = LocalDate.now().plusDays(20),
-            nextDueDate = LocalDate.now().plusDays(20),
+            date = LocalDate.now()
+                .plusDays(20),
+            nextDueDate = LocalDate.now()
+                .plusDays(20),
             completed = false
         )
     )
+
     DriveMateTheme {
-        MaintenanceScreen(records = sample)
+        MaintenanceScreen(
+            records = sample
+        )
     }
 }

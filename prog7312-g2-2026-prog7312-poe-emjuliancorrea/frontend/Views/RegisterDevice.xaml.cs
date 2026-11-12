@@ -10,6 +10,7 @@ public partial class RegisterDevice : Page, IGuidanceAware
 {
     private readonly Random _rng = new();
     private List<SensorRecord> _sensors = new();
+
     private string? _editingSensorId;
 
     public RegisterDevice()
@@ -50,7 +51,7 @@ public partial class RegisterDevice : Page, IGuidanceAware
         SensorGrid.ItemsSource = _sensors;
     }
 
-    private async void Save_Click(object sender, RoutedEventArgs e)
+        private async void Save_Click(object sender, RoutedEventArgs e)
     {
         if (_editingSensorId is null)
             await RegisterNewSensorAsync();
